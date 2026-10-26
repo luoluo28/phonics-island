@@ -1,245 +1,1987 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>音标勇者岛</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>音标勇者岛 · V3 成品（潮玩萌系·学习优先）</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif}
-body{background:#f8f5f0;color:#444;padding:16px;padding-bottom:40px}
-.container{max-width:720px;margin:0 auto}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.logo{display:flex;align-items:center;gap:6px;font-weight:bold;font-size:20px;color:#e85b4e}
-.tag{background:#fff;border-radius:99px;padding:6px 14px;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,0.06)}
-.card{background:#fff;border-radius:20px;padding:20px;box-shadow:0 3px 12px rgba(0,0,0,0.05);margin-bottom:16px}
-.tab-wrap{display:flex;gap:8px;margin-bottom:16px;justify-content:center}
-.tab{padding:8px 16px;border-radius:99px;background:#eee;color:#777;cursor:pointer}
-.tab.active{background:#b8d8f8;color:#222;font-weight:500}
-.play-btn{width:72px;height:72px;border-radius:50%;background:#ffcd60;border:none;font-size:28px;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,205,96,0.45);cursor:pointer}
-.listen-box{background:#e8f4ff;border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;margin:12px 0}
-.mouth-card{background:#fff2e4;border-radius:16px;padding:20px;text-align:center;margin:16px 0}
-.letter-tag{background:#eee;border-radius:99px;padding:6px 16px;display:inline-block;margin:8px 0}
-.listen-area{background:#e8f4ff;border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;margin:12px 0}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:99px;font-size:14px;z-index:999;display:none}
-#recogConfirmBtn{padding:10px 20px;border-radius:99px;border:none;background:#ffd175;font-size:16px;margin-top:12px;cursor:pointer}
-.footer-note{text-align:center;margin-top:30px;color:#aaa;font-size:13px}
+  :root{
+    --bg:#FDF8F1; --card:#FFFFFF; --line:#F0E4D6;
+    --ink:#4A4138; --sub:#9A8F82;
+    --peach:#FFA26B; --peach-d:#F0813F; --peach-bg:#FFE8D8;
+    --mint:#5ED0A6; --mint-d:#2FA37C; --mint-bg:#DFF6EC;
+    --sky:#6FB7F7; --sky-d:#3D8FE0; --sky-bg:#E2F0FE;
+    --lemon:#FFD66B; --lemon-d:#E8A93C; --lemon-bg:#FFF3D2;
+    --pink:#F9A8C2; --lav:#C9B8F5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(180deg,#FFF4E8 0%,#FDF8F1 45%,#EFF8F4 100%);color:var(--ink);min-height:100vh;}
+  #app{max-width:560px;margin:0 auto;padding:14px 16px 44px;min-height:100vh;display:flex;flex-direction:column;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;flex-wrap:wrap;}
+  .island-tag{font-weight:800;color:var(--peach-d);font-size:13px;background:#fff;border-radius:999px;padding:6px 12px;border:2px solid var(--line);}
+  .right-side{display:flex;gap:8px;align-items:center;}
+  .chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:800;}
+  .chip.gold{background:var(--lemon-bg);color:#B07A0A;border:1px solid #F2DFA8;}
+  .chip.mint{background:var(--mint-bg);color:var(--mint-d);}
+  .screen{display:none;flex-direction:column;gap:12px;}
+  .screen.active{display:flex;animation:pop .3s ease;}
+  @keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:14px;box-shadow:0 6px 16px rgba(74,65,56,.06);}
+  .card h3{font-size:15px;color:var(--peach-d);margin-bottom:8px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(180deg,#FFB98A,#FF8C52);border:none;border-radius:999px;padding:13px 24px;font-size:16px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 5px 0 #F0813F;transition:transform .1s;}
+  .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #F0813F;}
+  .btn.mint{background:linear-gradient(180deg,#7FDCB8,#4CC498);box-shadow:0 5px 0 #2FA37C;}
+  .btn.mint:active{box-shadow:0 1px 0 #2FA37C;}
+  .btn.soft{background:#fff;color:var(--peach-d);border:2px solid var(--peach);box-shadow:none;}
+  .btn.big{width:100%;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+  .btn.small{padding:8px 14px;font-size:14px;}
+
+  /* 问卷 */
+  .quiz-progress{font-size:13px;color:var(--sub);font-weight:800;text-align:center;margin-bottom:4px;}
+  .q-text{font-size:17px;font-weight:800;margin-bottom:12px;line-height:1.5;}
+  .q-opt{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:13px 12px;margin-bottom:10px;cursor:pointer;transition:all .12s;}
+  .q-opt .q-emoji{font-size:22px;flex:none;}
+  .q-opt.selected{background:var(--peach-bg);border-color:var(--peach);}
+  .q-opt.correct{background:var(--mint-bg);border-color:var(--mint);}
+  .q-opt.wrong{background:#FDEAEA;border-color:#E07B6A;}
+  .quiz-nav{display:flex;gap:10px;}
+  .feedback{font-size:15px;font-weight:800;text-align:center;min-height:24px;padding:4px 0;}
+
+  /* 首页 */
+  .hero-card{display:flex;gap:12px;align-items:center;}
+  .hero-ava{width:62px;height:62px;object-fit:cover;object-position:top;border-radius:50%;border:3px solid #FFD9BC;background:#fff;}
+  .plan-card{background:linear-gradient(135deg,#FFF1E4,#FFE9F0);border-color:#FFD9BC;}
+  .nav-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .help{font-size:12px;color:var(--sub);text-align:center;margin-top:8px;line-height:1.7;}
+
+  /* 地图 */
+  .map-wrap{position:relative;border-radius:22px;overflow:hidden;border:2px solid var(--line);box-shadow:0 8px 20px rgba(74,65,56,.1);}
+  .map-bg{display:block;width:100%;height:220px;object-fit:cover;}
+  .map-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(253,248,241,.6) 0%,rgba(253,248,241,0) 40%,rgba(253,248,241,.9) 100%);}
+  .map-panel{position:relative;left:auto;right:auto;bottom:auto;margin-top:-8px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:12px;}
+  .island-block{background:#fff;border:2px solid var(--line);border-radius:18px;padding:12px;margin-bottom:10px;}
+  .island-block .ib-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px;flex-wrap:wrap;}
+  .island-block.locked{opacity:.55;}
+  .ib-emoji{font-size:22px;background:#FFF3E2;border:2px solid #FFE0C4;border-radius:12px;padding:3px 8px;}
+  .ib-name{font-size:15px;font-weight:800;}
+  .ib-count{font-size:11px;color:var(--sub);}
+  .gbadge{font-size:11px;font-weight:800;border-radius:999px;padding:2px 9px;background:#F7F1E8;color:var(--sub);cursor:default;}
+  .gbadge.ready{background:var(--peach-bg);color:var(--peach-d);cursor:pointer;animation:wiggle 1.4s infinite;}
+  .gbadge.won{background:var(--mint-bg);color:var(--mint-d);}
+  @keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+  .ib-sounds{display:flex;flex-wrap:wrap;gap:8px;}
+  .ib-sound{width:52px;height:44px;border-radius:12px;background:var(--sky-bg);border:2px solid #CBDEF3;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:var(--sky-d);cursor:pointer;position:relative;}
+  .ib-sound.cleared{background:var(--mint-bg);border-color:#BFE8D6;color:var(--mint-d);}
+  .ib-sound.locked{opacity:.4;cursor:not-allowed;}
+  .ib-sound .tick{position:absolute;top:-7px;right:-7px;font-size:12px;color:var(--mint-d);background:#fff;border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center;}
+  .ib-sound .st3{position:absolute;top:-8px;left:-5px;font-size:11px;}
+  .ib-sound .evo{position:absolute;bottom:-7px;left:-4px;font-size:9px;color:var(--peach-d);background:#fff;border:1px solid var(--peach);border-radius:8px;padding:0 3px;}
+
+  /* 关卡通用 */
+  .steps{display:flex;gap:6px;justify-content:center;}
+  .step{font-size:11px;font-weight:800;border-radius:999px;padding:4px 12px;background:#F3EAE0;color:#B9AC9C;}
+  .step.on{background:var(--peach-bg);color:var(--peach-d);}
+  .obstacle-box{text-align:center;}
+  .obstacle{font-size:50px;display:inline-block;transition:transform .15s;}
+  .obstacle.hit{animation:shake .4s;}
+  .obstacle.defeated{opacity:.3;}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .hp-pips{display:flex;gap:5px;justify-content:center;margin-top:4px;}
+  .pip{width:18px;height:9px;border-radius:6px;background:#F3EAE0;border:1px solid var(--line);}
+  .pip.on{background:linear-gradient(90deg,#FFB98A,#FF8C52);}
+  .pip.prog.on{background:linear-gradient(90deg,#7FDCB8,#4CC498);}
+  .mon-caption{font-size:11px;color:var(--sub);text-align:center;margin-top:2px;}
+  .cur-sym{font-size:38px;font-weight:800;color:var(--sky-d);text-align:center;margin:4px 0;}
+  .q-title{font-size:18px;font-weight:800;margin:4px 0 10px;}
+  .q-label{font-size:12px;color:var(--sub);font-weight:800;}
+  .listen-box{display:flex;align-items:center;gap:10px;background:var(--sky-bg);border-radius:18px;padding:10px 12px;}
+  .play{width:48px;height:48px;border-radius:50%;background:linear-gradient(180deg,#FFD98A,#FFC153);border:none;font-size:20px;cursor:pointer;flex:none;box-shadow:0 4px 0 var(--lemon-d);color:#7A5410;}
+  .play:active{transform:translateY(2px);box-shadow:0 1px 0 var(--lemon-d);}
+  .play.slow{width:40px;height:40px;font-size:16px;background:#fff;border:2px solid var(--line);box-shadow:none;}
+  .hint{font-size:14px;color:var(--ink);flex:1;}
+  .hint b{font-size:16px;color:var(--sky-d);}
+  .opt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px;}
+  .opt{background:#fff;border:2px solid var(--line);border-radius:16px;padding:13px 10px;text-align:center;cursor:pointer;transition:all .12s;font-weight:800;color:var(--sky-d);font-size:20px;}
+  .opt .word{font-size:12px;color:var(--sub);font-weight:400;margin-top:2px;}
+  .opt.correct{background:var(--mint-bg);border-color:var(--mint);color:var(--mint-d);}
+  .opt.wrong{background:#FDEAEA;border-color:#E07B6A;color:#E07B6A;}
+  .scorebar{display:flex;gap:6px;justify-content:center;margin:8px 0;}
+  .scorebar .bar{width:44px;height:10px;border-radius:6px;background:#F3EAE0;}
+  .scorebar .bar.on{background:linear-gradient(90deg,#7FDCB8,#4CC498);}
+  .score-big{font-size:19px;font-weight:800;text-align:center;color:var(--sky-d);}
+  .combo-tag{font-size:12px;color:var(--ink);background:var(--sky-bg);border-radius:10px;padding:3px 8px;display:inline-block;}
+  /* 口型卡：把读法解释做成醒目的主角 */
+  .mouth-card{background:linear-gradient(180deg,#FFF4E6 0%,#FFEADA 100%);border:2px solid #FFD3B0;border-radius:18px;padding:12px 14px;margin:10px 0 8px;box-shadow:0 4px 0 #F6DCC6;text-align:center;position:relative;}
+  .mouth-label{font-size:11px;font-weight:800;color:#C97A47;letter-spacing:1px;margin-bottom:6px;}
+  .mouth-main{font-size:19px;font-weight:800;line-height:1.5;color:var(--ink);letter-spacing:.3px;}
+  .mouth-main .hl{color:#E2622A;background:linear-gradient(180deg,transparent 58%,#FFD28A 58%);padding:0 2px;border-radius:3px;font-size:22px;}
+  .mouth-main .ipa{color:var(--peach-d);font-size:20px;}
+  .mouth-warn{font-size:12.5px;font-weight:800;color:#B4614C;margin-top:7px;background:#FFF0EA;border-radius:10px;padding:4px 8px;display:inline-block;}
+
+  /* 合成 */
+  .syn-target{text-align:center;margin:6px 0;}
+  .big-word{font-size:32px;font-weight:800;color:var(--sky-d);letter-spacing:2px;}
+  .ipa-line{font-size:16px;color:var(--sub);margin-top:2px;}
+  .syn-slotrow{display:flex;justify-content:center;gap:8px;margin:10px 0;min-height:54px;flex-wrap:wrap;}
+  .syn-slot{width:50px;height:54px;border:2px dashed #D8CFC2;border-radius:14px;background:#FBF6EE;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;color:var(--sky-d);}
+  .syn-slot.filled{border-style:solid;border-color:var(--mint);background:var(--mint-bg);cursor:pointer;}
+  .syn-slot.filled:hover{border-color:var(--peach);background:var(--peach-bg);}
+  .syn-slot.bounce-back{animation:bounceBack .45s ease;}
+  @keyframes bounceBack{0%{transform:scale(.55) translateY(-16px);opacity:.2}60%{transform:scale(1.15) translateY(4px);opacity:1}100%{transform:scale(1) translateY(0)}}
+  .syn-slot.hint{border-color:var(--lemon-d);}
+  .syn-tilepool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0;}
+  .syn-tile{min-width:50px;height:54px;background:#fff;border:2px solid var(--sky);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;color:var(--sky-d);cursor:pointer;box-shadow:0 3px 0 #CBDEF3;transition:all .1s;padding:0 8px;}
+  .syn-tile.used{opacity:.3;pointer-events:none;}
+  .syn-tile.eliminated{opacity:.15;pointer-events:none;text-decoration:line-through;}
+  .item-row{display:flex;gap:8px;justify-content:center;margin-top:8px;flex-wrap:wrap;}
+
+  /* 结算 */
+  .result-stars{display:flex;justify-content:center;gap:8px;margin:6px 0;font-size:30px;}
+  .result-stars .on{color:var(--lemon-d);}
+  .result-stars .off{color:#E5DDD2;}
+  .spirit-card{display:flex;align-items:center;gap:12px;background:#FFF9F0;border-radius:18px;padding:12px;border:2px solid #FFD9BC;}
+  .spirit-card .s-img{width:84px;height:84px;flex:none;border-radius:16px;overflow:hidden;border:3px solid #FFD9BC;background:#fff;display:flex;align-items:center;justify-content:center;font-size:40px;}
+  .spirit-card .s-img img{width:100%;height:100%;object-fit:cover;display:block;}
+  .spirit-card .s-name{font-size:17px;font-weight:800;}
+  .spirit-card .s-talk{font-size:12px;color:var(--sub);line-height:1.6;margin-top:2px;}
+  .evo-bar{height:9px;border-radius:6px;background:#F3EAE0;overflow:hidden;margin-top:5px;}
+  .evo-bar .fill{height:100%;background:linear-gradient(90deg,#FFD66B,#FFA26B);border-radius:6px;transition:width .4s;}
+  .got-coin{text-align:center;font-size:14px;color:var(--lemon-d);font-weight:800;}
+  .reward-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:4px 0;}
+  .trans-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+
+  /* toast + 特效 */
+  .toast{position:fixed;left:50%;transform:translateX(-50%);top:18%;background:rgba(74,65,56,.92);color:#fff;padding:12px 22px;border-radius:999px;font-size:15px;z-index:99;opacity:0;pointer-events:none;transition:opacity .25s;white-space:nowrap;max-width:86%;text-align:center;}
+  .toast.show{opacity:1;}
+  .pop-star{position:fixed;font-size:32px;pointer-events:none;z-index:98;animation:starFly .8s ease-out forwards;}
+  @keyframes starFly{0%{opacity:1;transform:translateY(0) scale(.6)}60%{opacity:1}100%{opacity:0;transform:translateY(-90px) scale(1.3)}}
+  .coin-pop{position:fixed;font-size:24px;pointer-events:none;z-index:98;animation:coinFly .9s ease-out forwards;}
+  @keyframes coinFly{0%{opacity:1;transform:translateY(0) scale(.7)}100%{opacity:0;transform:translateY(-120px) translateX(30px) scale(1.2)}}
+  .correct-bounce{animation:correctBounce .5s cubic-bezier(.2,1.6,.4,1);}
+  @keyframes correctBounce{0%{transform:scale(1)}40%{transform:scale(1.08)}100%{transform:scale(1)}}
+  .wrong-shake{animation:wrongShake .4s;}
+  @keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+  .defeat-burst{animation:defeatBurst .6s ease-out forwards;}
+  @keyframes defeatBurst{0%{transform:scale(1)}40%{transform:scale(1.2) rotate(-6deg)}100%{transform:scale(.5) rotate(6deg);opacity:0}}
+  .spirit-glow{animation:spiritGlow 1s ease-in-out;}
+  @keyframes spiritGlow{0%,100%{filter:none}50%{filter:drop-shadow(0 0 14px rgba(255,198,107,.9));transform:scale(1.06)}}
+  .shop-entry-bounce{animation:shopBounce 1.6s infinite;}
+  @keyframes shopBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+  /* 图鉴/商店 */
+  .dex-stats{display:flex;justify-content:space-around;text-align:center;background:#fff;border:2px solid var(--line);border-radius:18px;padding:8px;}
+  .dex-stats b{font-size:17px;font-weight:800;display:block;}
+  .dex-stats span{font-size:10px;color:var(--sub);}
+  .dex-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .dex-cell{border:2px solid var(--line);border-radius:16px;overflow:hidden;position:relative;background:#fff;}
+  .dex-cell img{width:100%;height:88px;object-fit:cover;display:block;}
+  .dex-cell .d-emoji{width:100%;height:88px;display:flex;align-items:center;justify-content:center;font-size:44px;background:#FFF9F0;}
+  .dex-cell .dn{font-size:11px;text-align:center;padding:5px 4px;color:var(--ink);}
+  .dex-cell .dn b{color:var(--peach-d);}
+  .dex-cell.locked{border-style:dashed;}
+  .dex-cell.locked .d-emoji{color:#D8CCBD;background:#FBF5EC;font-size:30px;flex-direction:column;gap:2px;}
+  .dex-cell.locked .dn{color:#C9BDAE;}
+  .lvbadge{position:absolute;top:5px;right:5px;font-size:10px;font-weight:800;color:#fff;background:linear-gradient(180deg,#FFB98A,#FF8C52);border-radius:8px;padding:2px 8px;}
+  /* 宠物详情弹层 */
+  .dex-card{cursor:pointer;}
+  .dex-card .zoom-hint{position:absolute;right:5px;bottom:5px;font-size:9px;font-weight:800;color:#fff;background:rgba(120,90,200,.65);border-radius:8px;padding:2px 6px;opacity:0;transition:opacity .2s;}
+  .dex-card:hover .zoom-hint,.dex-card.tapped .zoom-hint{opacity:1;}
+  #dexModal{position:fixed;inset:0;background:rgba(30,20,40,.55);z-index:300;display:flex;align-items:center;justify-content:center;padding:18px;animation:fadeIn .2s ease;}
+  #dexModal.hide{display:none;}
+  .dex-modal-card{width:100%;max-width:320px;background:linear-gradient(160deg,#FFF8EE,#F3EEFF);border:3px solid #E2D6FA;border-radius:24px;overflow:hidden;box-shadow:0 18px 40px rgba(60,40,90,.35);animation:popIn .3s cubic-bezier(.2,1.4,.4,1);}
+  .dex-modal-head{position:relative;height:230px;background:radial-gradient(circle at 50% 30%,#FFF3E2,#F3E8FF);display:flex;align-items:center;justify-content:center;}
+  .dex-modal-head img{width:180px;height:180px;object-fit:contain;animation:floatY 3s ease-in-out infinite;filter:drop-shadow(0 8px 14px rgba(120,90,200,.25));}
+  .dex-modal-close{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;border:none;background:#fff;font-size:18px;font-weight:800;color:#7A6A5C;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12);line-height:1;}
+  .dex-modal-close:active{transform:scale(.92);}
+  .dex-modal-body{padding:12px 14px 14px;text-align:center;}
+  .dex-modal-name{font-size:18px;font-weight:800;color:var(--ink);}
+  .dex-modal-sym{font-size:22px;font-weight:800;color:var(--peach-d);}
+  .dex-modal-tags{display:flex;gap:6px;justify-content:center;margin:6px 0;flex-wrap:wrap;}
+  .dex-modal-mouth{font-size:12px;color:#6B5B4E;background:#FFF3E2;border-radius:12px;padding:8px 10px;margin:6px 0;text-align:left;}
+  .dex-modal-trap{font-size:11px;color:#C96A5A;font-weight:600;margin:2px 0;}
+  .dex-modal-play{margin-top:6px;width:100%;}
+  .tag-evo1{background:#E8F6FF;color:#2E7FB5;border:1px solid #C6E6FA;}
+  .tag-evo2{background:#FFF2D6;color:#B57A12;border:1px solid #F2DFA8;}
+  .tag-evo3{background:#FFE8F0;color:#C0437B;border:1px solid #F5C4D9;}
+  @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+  .shop-item{display:flex;align-items:center;gap:12px;background:#FFF9F0;border:2px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px;}
+  .shop-item .si-emoji{font-size:24px;}
+  .shop-item .si-body{flex:1;}
+  .shop-item .si-name{font-weight:800;font-size:14px;}
+  .shop-item .si-desc{font-size:11px;color:var(--sub);margin-top:2px;line-height:1.6;}
+  .spirit-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;max-height:120px;overflow:auto;}
+  .s-chip{padding:4px 9px;border-radius:10px;background:#fff;border:2px solid var(--line);cursor:pointer;font-size:12px;font-weight:800;color:var(--sky-d);}
+  .s-chip.sel{border-color:var(--peach);background:var(--peach-bg);color:var(--peach-d);}
+
+  /* ===== 防盗署名水印 ===== */
+  #yb_watermark{position:fixed;left:8px;bottom:8px;z-index:999;display:flex;flex-direction:column;gap:2px;
+    background:rgba(253,248,241,.85);border:1px solid #F0E4D6;border-radius:10px;padding:4px 9px;
+    font-size:10px;color:#9A8E80;line-height:1.35;backdrop-filter:blur(2px);pointer-events:none;user-select:none;}
+  #yb_watermark span{display:block;}
+  #yb_watermark .yb_ws2{font-size:9px;color:#C9A98A;}
+
+  /* ===== 存档备份面板 ===== */
+  .save-panel .save-area{background:#FFF7EA;border:2px dashed #F2DFA8;border-radius:12px;padding:10px;margin:8px 0;}
+  .save-panel textarea{width:100%;min-height:70px;border:1px solid var(--line);border-radius:10px;padding:8px;font-size:11px;font-family:monospace;resize:vertical;background:#fff;color:#5a4a3a;}
+  .save-panel .save-tip{font-size:11px;color:var(--sub);line-height:1.7;margin-top:6px;}
+
+  /* ===== 每日挑战面板 ===== */
+  .daily-prog{font-size:12px;font-weight:800;color:var(--sky-d);margin-bottom:6px;}
+  .daily-mastery{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;}
+
+  /* ===== 通关祝贺彩带动效 ===== */
+  .confetti{position:fixed;top:-20px;width:10px;height:14px;z-index:9998;pointer-events:none;opacity:.9;}
+  @keyframes confFall{to{transform:translateY(105vh) rotate(720deg);opacity:.1}}
+  .done-cheer{text-align:center;font-size:15px;font-weight:800;color:var(--peach-d);margin:12px 0 4px;line-height:1.6;min-height:44px;}
 </style>
 </head>
 <body>
-<div class="container">
-<div class="header">
-<div class="logo">🍓 音标勇者岛</div>
-<div style="display:flex;gap:10px">
-<div class="tag">💰2</div>
-<div class="tag">进阶</div>
-<div class="tag">⭐0</div>
+<div id="app">
+  <div class="topbar">
+    <span class="island-tag">🍓 音标勇者岛</span>
+    <span class="right-side">
+      <span class="chip gold shop-entry-bounce" onclick="sfxTap();showShop()" style="cursor:pointer;">🪙 <span id="goldCount">0</span></span>
+      <span class="chip gold" id="diffChip">萌芽</span>
+      <span class="chip gold">⭐ <span id="starCount">0</span></span>
+    </span>
+  </div>
+
+  <!-- S1 学习小屋 -->
+  <div id="scr-home" class="screen active">
+    <div class="card hero-card">
+      <img class="hero-ava" src="art/v3/hero.png" alt="小向导">
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:800;font-size:15px;">你好呀，小小勇者！</div>
+        <div style="font-size:12px;color:var(--sub);margin-top:3px;">已收服 <b id="hCount">0</b>/48 · ⭐<b id="hStars">0</b> · 🪙<b id="hGold">0</b> · <span id="hCont" style="display:none;color:var(--mint-d);font-weight:800;">进度已恢复 ✓</span></div>
+        <div class="evo-bar" style="max-width:220px;"><div class="fill" id="hBar" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="card plan-card">
+      <div style="font-size:11px;font-weight:800;color:var(--peach-d);letter-spacing:1px;">📋 今日学习计划</div>
+      <div style="font-size:19px;font-weight:800;margin:4px 0 2px;" id="planTitle">学 /æ/ 大嘴河马</div>
+      <div style="font-size:12px;color:var(--sub);margin-bottom:10px;" id="planSub">预计 5 分钟 · 听辨 → 跟读 → 拼读 三小关</div>
+      <button class="btn big" id="planBtn" onclick="goToday()">开始今天的学习 →</button>
+    </div>
+    <div class="card">
+      <div style="font-weight:800;font-size:13px;margin-bottom:8px;">📌 今天的小目标</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;">
+        <span style="font-size:17px;">⚡</span><span style="flex:1;">复习打卡 <b style="color:var(--mint-d);" id="revProg">0/5</b></span>
+        <button class="btn small mint" onclick="startReview()">去复习</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+        <span style="font-size:17px;">🎤</span><span style="flex:1;">大声跟读 1 次</span><span style="color:var(--sub);font-size:11px;">试炼中完成</span>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn small soft" style="flex:1" onclick="enterMap()">🗺️ 群岛地图</button>
+      <button class="btn small soft" style="flex:1" onclick="showDex()">📖 图鉴</button>
+      <button class="btn small soft" style="flex:1" onclick="showShop()">🛍️ 小卖部</button>
+      <button class="btn small soft" style="flex:1" onclick="showSave()">💾 存档</button>
+    </div>
+    <div id="dailyEntry" style="display:none;margin-top:10px;">
+      <button class="btn big sky" onclick="startDaily()">⚔️ 今日挑战 · 巩固音标</button>
+    </div>
+    <div class="help">每天 5 分钟 · 学一个音、收一只精灵 · 学完一岛找守护者盖章！</div>
+  </div>
+
+  <!-- 存档备份 -->
+  <div id="scr-save" class="screen save-panel">
+    <div class="card">
+      <div style="font-weight:800;font-size:15px;">💾 进度存档备份</div>
+      <div class="save-area">
+        <div style="font-size:12px;font-weight:800;color:var(--peach-d);margin-bottom:4px;">① 导出（换设备/清缓存前点这里）</div>
+        <button class="btn small" onclick="exportSave()">复制备份码</button>
+        <div class="save-tip">进度自动存在本机浏览器里。想在新手机/新浏览器继续，点「复制备份码」，把这段码发给自己（如备忘录），新设备上粘贴导入即可。</div>
+      </div>
+      <div class="save-area">
+        <div style="font-size:12px;font-weight:800;color:var(--mint-d);margin-bottom:4px;">② 导入（新设备上恢复进度）</div>
+        <textarea id="saveImport" placeholder="把备份码粘贴到这里…"></textarea>
+        <button class="btn small mint" style="margin-top:6px;" onclick="importSave()">恢复进度</button>
+        <div class="save-tip">⚠️ 导入会覆盖当前本机的进度。请在可信设备上导入，别把备份码发给陌生人。</div>
+      </div>
+    </div>
+    <button class="btn big soft" onclick="show('scr-home')">← 返回首页</button>
+    <div class="help">备份码 = 你的完整进度（已学音标 / 金币 / 星星 / 进化 / 图章），一段文字即可迁移。</div>
+  </div>
+
+  <!-- 每日挑战 -->
+  <div id="scr-daily" class="screen">
+    <div class="card">
+      <div style="font-weight:800;font-size:15px;">⚔️ 今日挑战 · 巩固音标</div>
+      <div class="daily-prog" id="dailyProg">第 1 / 5 题</div>
+      <div style="text-align:center;font-size:42px;margin:10px 0;" id="dailyWord">🐱</div>
+      <div style="text-align:center;font-size:14px;font-weight:800;" id="dailyQ">听发音，选出你听到的音标</div>
+      <div id="dailyOpts" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0;"></div>
+      <div class="feedback" id="dailyFb"></div>
+      <button class="btn big" id="dailyNext" onclick="dailyNext()" style="display:none;">下一题 →</button>
+      <div class="daily-mastery" id="dailyMastery"></div>
+    </div>
+    <button class="btn big soft" onclick="show('scr-home')">← 返回首页</button>
+  </div>
+
+  <!-- 问卷 -->
+  <div id="scr-quiz" class="screen">
+    <div class="card">
+      <div class="quiz-progress" id="quizProg">第 1 / 3 题</div>
+      <div class="q-text" id="qText"></div>
+      <div id="qOpts"></div>
+      <div class="feedback" id="qFb"></div>
+      <div class="quiz-nav">
+        <button class="btn soft" id="qBack" onclick="quizBack()" style="display:none">← 上一题</button>
+        <button class="btn" id="qNext" onclick="quizNext()" style="flex:1">下一题 →</button>
+      </div>
+    </div>
+    <div class="help">自评题没有对错；听音题请点🔊播放、听清了再选——选太快会被当作盲选，不计分。定档只是起点，玩几关后会自动调整。</div>
+  </div>
+
+  <!-- 定档 -->
+  <div id="scr-quizresult" class="screen">
+    <div style="text-align:center;font-size:44px;" id="qrEmoji">🌱</div>
+    <div style="text-align:center;font-size:22px;font-weight:800;" id="qrTitle">萌芽勇者</div>
+    <div style="text-align:center;font-size:13px;color:var(--sub);" id="qrDesc">从 /æ/ 开始慢慢来</div>
+    <div class="card" style="text-align:center;">
+      <div style="font-size:14px;color:var(--sub);">本次测试得分</div>
+      <div style="font-size:38px;font-weight:800;color:var(--sky-d);margin:4px 0;"><span id="qrScore">0</span><span style="font-size:16px;">/9</span></div>
+      <div style="font-size:13px;" id="qrNote"></div>
+      <div style="font-size:12px;color:var(--lemon-d);margin-top:6px;font-weight:800;" id="qrSkip"></div>
+    </div>
+    <button class="btn big" onclick="enterMap()">进入群岛地图 →</button>
+  </div>
+
+  <!-- S2 群岛地图 -->
+  <div id="scr-map" class="screen">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <button class="btn small soft" onclick="show('scr-home')">🏠 返回首页</button>
+      <span class="chip mint" id="mapCountTop">0/48</span>
+    </div>
+    <div class="map-wrap">
+      <img class="map-bg" src="art/v3/map.png" alt="群岛地图">
+      <div class="map-overlay"></div>
+      <div class="map-panel">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="chip gold" id="mapDiff">萌芽</span>
+          <span class="chip mint" style="margin-left:auto;" id="mapCount">0/48</span>
+        </div>
+        <div id="worldMap"></div>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button class="btn small mint" style="flex:1" onclick="startReview()">⚡ 复习打卡</button>
+          <button class="btn small" style="flex:1" onclick="goToday()">继续学习 →</button>
+        </div>
+      </div>
+    </div>
+    <div class="help" style="text-align:left;">每个音标学会即点亮 ✓，三星通关显示 ⭐。学完一岛的全部音标，去找守护者盖章！</div>
+  </div>
+
+  <!-- S3 试炼场 · 听辨 -->
+  <div id="scr-listen" class="screen">
+    <div class="card">
+      <div class="steps"><span class="step on">1 听辨</span><span class="step">2 跟读</span><span class="step">3 拼读</span></div>
+      <div class="obstacle-box"><div class="obstacle" id="obsEmoji">🌀</div><div class="hp-pips" id="obsHp"></div><div class="mon-caption" id="obsName">捣蛋风团出现啦！答对一次吹散一团</div></div>
+      <div class="cur-sym" id="curSymBig">/æ/</div>
+      <div class="listen-box">
+        <button class="play" onclick="playCurrent()">▶</button>
+        <button class="play slow" onclick="playCurrent(true)">🐢</button>
+        <div class="hint">听！这个词里藏着哪个音？</div>
+      </div>
+      <div class="opt-grid" id="optGrid"></div>
+      <div class="feedback" id="listenFb"></div>
+    </div>
+    <button class="btn big" id="listenNext" style="display:none" onclick="goRead()">下一步：跟读 →</button>
+    <button class="btn soft" id="skipBtn" style="display:none" onclick="useSkip()">🎫 使用跳过卡（跳过本关）</button>
+  </div>
+
+  <!-- 跟读 -->
+  <div id="scr-read" class="screen">
+    <div class="card">
+      <div class="steps"><span class="step">1 听辨</span><span class="step on">2 跟读</span><span class="step">3 拼读</span></div>
+      <div class="q-title" style="text-align:center;" id="readTitle">照着读，看看像不像！</div>
+      <div class="listen-box">
+        <button class="play" onclick="playReadWord()">▶</button>
+        <button class="play slow" onclick="playReadWord(true)">🐢</button>
+        <div class="hint">先听标准发音，再跟着读 <b id="readWord">cat</b> <span style="font-size:12px;color:var(--sub);" id="readMeaning">(猫)</span></div>
+      </div>
+      <div class="mouth-card">
+        <div class="mouth-label">👄 口型这样做</div>
+        <div class="mouth-main" id="mouthTip"></div>
+        <div class="mouth-warn" id="trapTip"></div>
+      </div>
+      <div style="text-align:center;margin:2px 0 8px;"><span class="combo-tag">字母组合：<b id="comboShow">a</b></span></div>
+      <div class="listen-box" style="justify-content:space-between;">
+        <button class="play" id="micBtn" onclick="startReading()">🎤</button>
+        <div class="hint" id="micStatus" style="flex:1;">点 🎤 开始跟读</div>
+      </div>
+      <div class="scorebar" id="readScoreBar"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+      <div class="score-big" id="readScore">—</div>
+      <div class="feedback" id="readFb"></div>
+    </div>
+    <button class="btn big" id="readNext" style="display:none" onclick="goSynthesize()">下一步：拼读 →</button>
+    <div class="help">读不准也没关系，多试几次，小向导等你！</div>
+  </div>
+
+  <!-- 拼读 -->
+  <div id="scr-syn" class="screen">
+    <div class="card">
+      <div class="steps"><span class="step">1 听辨</span><span class="step">2 跟读</span><span class="step on">3 拼读</span></div>
+      <div class="obstacle-box"><div class="obstacle" id="synObs">🌀</div><div class="hp-pips" id="synHp"></div></div>
+      <div class="syn-target">
+        <div style="font-size:12px;color:var(--sub);font-weight:800;" id="synMode">🧩 拼读挑战</div>
+        <div class="big-word" id="synWord">cat</div>
+        <div class="ipa-line" id="synIpa">/k/ /æ/ /t/</div>
+      </div>
+      <div class="listen-box" style="margin-bottom:8px;">
+        <button class="play" onclick="playSyn()">▶ 重播</button>
+        <button class="play slow" onclick="playSyn(true)">🐢 慢速</button>
+        <div class="hint">随时可以重听目标单词</div>
+      </div>
+      <div class="syn-slotrow" id="synSlotRow"></div>
+      <div class="syn-tilepool" id="synTilePool"></div>
+      <div class="feedback" id="synFb"></div>
+      <div class="item-row"><button class="btn small" id="hintBtn" style="display:none" onclick="useHint()">💡 使用提示卡</button></div>
+    </div>
+    <button class="btn big" id="synNext" style="display:none" onclick="finishLevel()">看结果 →</button>
+  </div>
+
+  <!-- S4 守护者考验 -->
+  <div id="scr-guardian" class="screen">
+    <div class="card" style="text-align:center;background:linear-gradient(135deg,#F3EEFF,#E8F6FF);border-color:#E2D6FA;">
+      <img src="art/v3/guardian.png" alt="守护者" style="width:130px;border-radius:18px;box-shadow:0 8px 18px rgba(120,90,200,.2);">
+      <div style="font-size:15px;font-weight:800;margin-top:6px;" id="gdName">珊瑚湾守护者 · 泡泡王</div>
+      <div style="font-size:12px;color:var(--sub);margin-top:3px;" id="gdTalk">「答对我 5 个问题，我就给你盖上这个岛的印章！」</div>
+      <div class="hp-pips" id="gdStamps" style="margin-top:8px;"></div>
+      <div style="font-size:11px;color:var(--sub);margin-top:2px;" id="gdProg">印章进度 0 / 5</div>
+    </div>
+    <div class="card">
+      <div class="listen-box">
+        <button class="play" onclick="playGdWord()">▶</button>
+        <button class="play slow" onclick="playGdWord(true)">🐢</button>
+        <div class="hint" id="gdQ">第 1 / 5 题 ·「bird」里的目标音是？</div>
+      </div>
+      <div class="opt-grid" id="gdOpts"></div>
+      <div class="feedback" id="gdFb"></div>
+    </div>
+    <button class="btn big" id="gdNext" style="display:none" onclick="gdNextQ()">下一题 →</button>
+  </div>
+
+  <!-- S5 收服庆祝 -->
+  <div id="scr-result" class="screen">
+    <div style="text-align:center;font-size:36px;">🎉🌟🎉</div>
+    <div class="card">
+      <div class="result-stars" id="resultStars"></div>
+      <div style="font-size:12px;color:var(--sub);text-align:center;margin-bottom:8px;" id="starNote"></div>
+      <div class="spirit-card">
+        <div class="s-img" id="spiritImg">🐹</div>
+        <div style="flex:1;min-width:0;">
+          <div class="s-name" id="spiritName">/æ/ 大嘴河马</div>
+          <div style="font-size:12px;color:var(--peach-d);font-weight:800;" id="spiritEvo">宝宝 · 成长 0/30</div>
+          <div class="s-talk" id="spiritTalk">「跟我读！」</div>
+          <div class="evo-bar"><div class="fill" id="spiritEvoBar" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="mouth-card">
+        <div class="mouth-label">👄 这样读才对</div>
+        <div class="mouth-main" id="resultMouth"></div>
+        <div class="mouth-warn" id="resultTrap"></div>
+      </div>
+      <div class="reward-row" id="rewardRow"></div>
+      <div class="got-coin" id="coinLine">本关获得 +6 金币</div>
+    </div>
+    <div class="card" id="transBox" style="background:var(--mint-bg);border-color:#BFE8D6;display:none;">
+      <div style="font-size:13px;font-weight:800;">🌟 小试身手 · 用新学的音读新词（+5🪙）</div>
+      <div class="listen-box" style="margin-top:8px;background:#fff;">
+        <button class="play" onclick="playTrans()">▶</button>
+        <button class="play slow" onclick="playTrans(true)">🐢</button>
+        <div class="hint" id="transHint">这个词里有你刚学的音吗？</div>
+      </div>
+      <div class="trans-opts" id="transOpts"></div>
+      <div class="feedback" id="transFb"></div>
+    </div>
+    <button class="btn big" id="resultBtn" onclick="nextOrFinish()">继续冒险 →</button>
+    <div class="help" style="text-align:center;"><span onclick="enterMap()" style="cursor:pointer;text-decoration:underline;">回到地图</span></div>
+  </div>
+
+  <!-- 全通关 -->
+  <div id="scr-done" class="screen">
+    <div style="text-align:center;font-size:52px;" id="doneEmoji">🏆</div>
+    <div style="text-align:center;font-size:24px;font-weight:800;">音标勇者岛 · 全部通关！</div>
+    <div style="text-align:center;font-size:14px;color:var(--sub);">你已收服全部 48 只精灵，拿到了 <b id="doneStars">0</b> 颗星</div>
+    <div class="done-cheer" id="doneCheer"></div>
+    <button class="btn big" onclick="enterMap()">回到地图</button>
+    <button class="btn big sky" onclick="startDaily()">⚔️ 挑战每日巩固</button>
+    <button class="btn big soft" onclick="resetAll()">重新开始</button>
+    <div class="help">恭喜你！已经掌握全部常用音标，可以去读更长的单词啦。坚持每日挑战，巩固不忘！</div>
+  </div>
+
+  <!-- 图鉴 -->
+  <div id="scr-dex" class="screen">
+    <div class="dex-stats">
+      <div><b style="color:var(--peach-d);" id="dexCount">0</b><span>已收服</span></div>
+      <div><b style="color:var(--mint-d);" id="dexEvoCount">0</b><span>已成长</span></div>
+      <div><b style="color:var(--lemon-d);" id="dexStarCount">0</b><span>三星通关</span></div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+      <span class="chip peach">全部 48</span><span class="chip mint">已收服</span><span class="chip gold">👑 已成长</span>
+    </div>
+    <div class="dex-grid" id="dexGrid"></div>
+    <button class="btn big" onclick="enterMap()">回到地图</button>
+    <div class="help">每只精灵都有专属立绘和口型秘诀，收服后点亮！<b style="color:var(--peach-d);">点击任意精灵可放大细看 👆</b></div>
+  </div>
+
+  <!-- 宠物详情弹层 -->
+  <div id="dexModal" class="hide" onclick="if(event.target===this)closeDexCard()">
+    <div class="dex-modal-card">
+      <div class="dex-modal-head">
+        <img id="dmImg" src="" alt="">
+        <button class="dex-modal-close" onclick="closeDexCard()">✕</button>
+      </div>
+      <div class="dex-modal-body">
+        <div class="dex-modal-sym" id="dmSym"></div>
+        <div class="dex-modal-name" id="dmName"></div>
+        <div class="dex-modal-tags" id="dmTags"></div>
+        <div class="dex-modal-mouth" id="dmMouth"></div>
+        <div class="dex-modal-trap" id="dmTrap"></div>
+        <button class="btn big dex-modal-play" id="dmPlay" onclick="playDmWord()">🔊 听标准发音</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 商店 -->
+  <div id="scr-shop" class="screen">
+    <div class="card">
+      <div style="font-weight:800;font-size:15px;">🛍️ 小卖部 · 金币兑换，全程免费</div>
+      <div style="text-align:center;font-size:17px;font-weight:800;color:var(--peach-d);margin:8px 0;">🪙 <span id="shopGold">0</span></div>
+      <div class="shop-item">
+        <div class="si-emoji">💎</div>
+        <div class="si-body">
+          <div class="si-name">成长石</div>
+          <div class="si-desc">给下面选中的一只精灵 +10 成长点</div>
+          <div class="spirit-chips" id="stoneTargets"></div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:13px;font-weight:800;color:var(--lemon-d);">🪙20</div>
+          <button class="btn small" id="buyStoneBtn" onclick="buyStone()">兑换</button>
+        </div>
+      </div>
+      <div class="shop-item">
+        <div class="si-emoji">💡</div>
+        <div class="si-body">
+          <div class="si-name">提示卡 ×1</div>
+          <div class="si-desc">拼读挑战里自动提示一块碎片 / 排除一个错误项（现有 <b id="hintOwn">0</b> 张）</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:13px;font-weight:800;color:var(--lemon-d);">🪙15</div>
+          <button class="btn small" onclick="buyHint()">兑换</button>
+        </div>
+      </div>
+      <div class="shop-item">
+        <div class="si-emoji">🎫</div>
+        <div class="si-body">
+          <div class="si-name">跳过卡 ×1</div>
+          <div class="si-desc">直接通过当前关卡（只拿 1 星，现有 <b id="skipOwn">0</b> 张）</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:13px;font-weight:800;color:var(--lemon-d);">🪙30</div>
+          <button class="btn small" onclick="buySkip()">兑换</button>
+        </div>
+      </div>
+    </div>
+    <button class="btn big" onclick="enterMap()">回到地图</button>
+  </div>
 </div>
+
+<!-- ===== 署名水印（作者信息，勿删） ===== -->
+<div id="yb_watermark">
+  <span>© 罗曼蒂 · 小红书 4749740482</span>
+  <span class="yb_ws2">音标勇者岛 · 免费启蒙小游戏</span>
 </div>
-<div class="card">
-<div class="tab-wrap">
-<div class="tab">1 听辨</div>
-<div class="tab active">2 跟读</div>
-<div class="tab">3 拼读</div>
-</div>
-<h2 style="text-align:center;margin-bottom:16px">照口型读: /æ/</h2>
-<div class="listen-box">
-<button class="play-btn" id="audioPlayBtn">▶</button>
-<div>先听标准发音，再跟着读 hat (帽子)</div>
-</div>
-<div class="mouth-card">
-<div style="font-size:24px;margin-bottom:10px">👄 口型这样做</div>
-<div style="font-size:22px;line-height:1.6">嘴巴大张、下巴下拉，像<span style="color:#e85b4e">啊</span>但更短促</div>
-<div style="margin-top:12px;color:#e85b4e;font-weight:500">⚠️ 别读成拼音 a</div>
-</div>
-<div style="text-align:center">
-<div class="letter-tag">字母组合: a</div>
-</div>
-<div class="listen-area">
-<div class="play-btn" style="background:#ffd175">...</div>
-<div>🎧 正在听，请跟着读 hat ...</div>
-</div>
-<div style="text-align:center;margin-top:20px;color:#999">读不准也没关系，多试几次，小向导等你!</div>
-</div>
-<div class="footer-note">© 罗曼蒂 · 小红书 4749740482<br>音标勇者岛 · 免费启蒙小游戏</div>
+<!-- ===== 引流入口（通关后显示） ===== -->
+<div id="yb_follow" style="display:none;">
+  <div style="text-align:center;font-weight:800;color:#E2622A;font-size:14px;margin-top:14px;">
+    🎉 喜欢这个小游戏吗？去小红书找我<br/>
+    <span style="font-size:12px;color:#9A8E80;">搜索「罗曼蒂 · 4749740482」关注，解锁更多 AI 作品</span>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-let speechOK = false;
-let voiceList = [];
-const isMobile = /Android|iPhone|iPad|iPod|WeiXin|MicroMessenger/i.test(navigator.userAgent);
-// 美式发音 type=2，英式type=1
-const TTS_BASE_URL = "https://dict.youdao.com/dictvoice?type=2&audio=";
-let audioPlayer = new Audio();
+/* ============ V3 成品引擎 ============ */
+/* 防盗指纹：本文件原创作者信息，被转载时可凭此证明 */
+const YB_AUTHOR = "罗曼蒂";
+const YB_XHS_ID = "4749740482";
+const YB_PROJECT = "音标勇者岛";
+const YB_FINGERPRINT = "YBZD-V3.0-PROTECTED | 罗曼蒂 | 4749740482 | 2026-10-25";
 
-let recognition = null;
-let recogTimer = null;
-const MAX_LISTEN_DURATION = 8000;
-let isListening = false;
-const targetWord = "hat";
-
-function showToast(msg){
-  const t = document.getElementById("toast");
-  if(!t) return;
-  t.innerText = msg;
-  t.style.display="block";
-  setTimeout(()=>{t.style.display="none"},2200);
+/* ===== 防盗：通关后显示关注入口 ===== */
+function showFollowPrompt(){
+  const f=document.getElementById("yb_follow");
+  if(f) f.style.display="block";
 }
 
-function initSpeech() {
-  if ('speechSynthesis' in window) {
-    function loadVoices(){
-      voiceList = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
-      speechOK = voiceList.length > 0;
+/* ===== 防盗：来源校验 + 首次进入作者提示 ===== */
+function ybAntiPiracy(){
+  try{
+    // 首次进入，温柔提示作者（仅提示一次，不打扰玩法）
+    if(!localStorage.getItem("ybsd_seen_author")){
+      const t=document.getElementById("toast");
+      if(t){ t.textContent="本游戏由 罗曼蒂（小红书 4749740482）原创制作"; t.classList.add("show"); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2600); }
+      try{ localStorage.setItem("ybsd_seen_author","1"); }catch(e){}
     }
-    loadVoices();
-    speechSynthesis.onvoiceschanged = loadVoices;
+  }catch(e){}
+}
+// 页面加载完成后执行
+if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded", ybAntiPiracy); } else { ybAntiPiracy(); }
+
+const SAVE_KEY = "ybsd_save_v3";
+
+const DIFF = {
+  sprout:{ key:"sprout", name:"萌芽", listenOpts:3 },
+  advance:{ key:"advance", name:"进阶", listenOpts:4 },
+  elite:{ key:"elite", name:"精英", listenOpts:4 }
+};
+
+const QUIZ = [
+  { q:"你以前学过英语音标吗？", type:"self",
+    opts:[{emoji:"🙅",label:"完全没学过",v:0},{emoji:"👀",label:"见过，但不太会读",v:1},{emoji:"📚",label:"学过一些",v:2},{emoji:"💪",label:"学得很熟",v:3}] },
+  { q:"竖起耳朵：我说的哪一个单词？", type:"listen", audio:"cat",
+    opts:[{emoji:"🛏️",label:"bed（床）",correct:false},{emoji:"🐱",label:"cat（猫）",correct:true},{emoji:"🐷",label:"pig（猪）",correct:false},{emoji:"🐶",label:"dog（狗）",correct:false},{emoji:"🙅",label:"听不出来",honest:true,correct:false}] },
+  { q:"再听一个，这次更短促：是哪个词？", type:"listen", audio:"book",
+    opts:[{emoji:"📖",label:"book（书）",correct:true},{emoji:"🥾",label:"boot（靴子）",correct:false},{emoji:"🎈",label:"ball（球）",correct:false},{emoji:"🚪",label:"door（门）",correct:false},{emoji:"🙅",label:"听不出来",honest:true,correct:false}] }
+];
+
+/* ============ 群岛数据（48 音标 · V3 软萌世界观） ============ */
+const ISLANDS = [
+  { key:"short", name:"短元音岛", emoji:"🐸", boss:"🌀", obs:{e:"🌀",n:"捣蛋风团",v:"吹散"}, gd:"泡泡王",
+    sounds:[
+      {sym:"/æ/", spirit:"🦛", spiritName:"大嘴河马", art:"art/v3/spirit_ae.jpg", mouth:"嘴巴大张、下巴下拉，像\"啊\"但更短促", trap:"别读成拼音 a", combo:"a",
+        core:"cat", ipa:["/k/","/æ/","/t/"], letter:"a",
+        words:{ sprout:["cat(猫)","hat(帽子)"], advance:["cat(猫)","hat(帽子)","map(地图)"], elite:["cat(猫)","hat(帽子)","map(地图)","back(背)"] } },
+      {sym:"/e/", spirit:"🐥", spiritName:"帽帽小鸡", art:"art/v3/spirit_e.jpg", mouth:"嘴巴半开、嘴角往两边咧，像\"哎\"", trap:"别和 /æ/ 搞混", combo:"e/ea",
+        core:"bed", ipa:["/b/","/e/","/d/"], letter:"e",
+        words:{ sprout:["bed(床)","hen(母鸡)"], advance:["bed(床)","hen(母鸡)","leg(腿)"], elite:["bed(床)","hen(母鸡)","leg(腿)","pen(笔)"] } },
+      {sym:"/ɪ/", spirit:"🐷", spiritName:"短鼻小猪", art:"art/v3/spirit_ih.jpg", mouth:"嘴巴扁扁的，像\"一\"但更短促", trap:"别读成长音 iː", combo:"i/y",
+        core:"pig", ipa:["/p/","/ɪ/","/g/"], letter:"i",
+        words:{ sprout:["pig(猪)","six(六)"], advance:["pig(猪)","six(六)","win(赢)"], elite:["pig(猪)","six(六)","win(赢)","pin(别针)"] } },
+      {sym:"/ɒ/", spirit:"🐶", spiritName:"圆嘴小狗", art:"art/v3/spirit_o.jpg", mouth:"嘴巴圆圆地张开，像拼音 o 但更用力", trap:"别和 oʊ 搞混", combo:"o",
+        core:"dog", ipa:["/d/","/ɒ/","/g/"], letter:"o",
+        words:{ sprout:["dog(狗)","hot(热)"], advance:["dog(狗)","hot(热)","top(顶部)"], elite:["dog(狗)","hot(热)","top(顶部)","sock(袜子)"] } },
+      {sym:"/ʌ/", spirit:"🐵", spiritName:"松嘴小猴", art:"art/v3/spirit_uh.jpg", mouth:"嘴巴放松、短促地\"啊\"", trap:"比 /æ/ 更松更短", combo:"u/o",
+        core:"cup", ipa:["/k/","/ʌ/","/p/"], letter:"u",
+        words:{ sprout:["cup(杯子)","bus(公交车)"], advance:["cup(杯子)","bus(公交车)","sun(太阳)"], elite:["cup(杯子)","bus(公交车)","sun(太阳)","duck(鸭子)"] } },
+      {sym:"/ʊ/", spirit:"🦆", spiritName:"收嘴小鸭", art:"art/v3/spirit_u.jpg", mouth:"嘴巴圆、嘴唇微收，像\"屋\"但更短促", trap:"别和 uː 搞混", combo:"oo/u",
+        core:"book", ipa:["/b/","/ʊ/","/k/"], letter:"oo",
+        words:{ sprout:["book(书)","foot(脚)"], advance:["book(书)","foot(脚)","look(看)"], elite:["book(书)","foot(脚)","look(看)","good(好)"] } },
+      {sym:"/ə/", spirit:"🐸", spiritName:"轻声小蛙", art:"art/v3/spirit_schwa.jpg", mouth:"最轻最松的音，像\"额\"", trap:"常出现在弱读音节", combo:"a/e/o/u/er",
+        core:"about", ipa:["/ə/","/b/","/aʊ/","/t/"], letter:"a",
+        words:{ sprout:["about(关于)","banana(香蕉)"], advance:["about(关于)","banana(香蕉)","teacher(老师)"], elite:["about(关于)","banana(香蕉)","teacher(老师)","today(今天)"] } }
+    ]},
+  { key:"long", name:"长元音岛", emoji:"🦒", boss:"☁️", obs:{e:"☁️",n:"迷糊云朵",v:"驱散"}, gd:"长云公公",
+    sounds:[
+      {sym:"/iː/", spirit:"🐦", spiritName:"咧嘴长尾鸟", art:"art/v3/spirit_ee.jpg", mouth:"嘴角用力向两边咧开，像\"一\"拉长", trap:"别读成短音 /ɪ/", combo:"ee/ea/e",
+        core:"see", ipa:["/s/","/iː/"], letter:"ee",
+        words:{ sprout:["see(看见)","bee(蜜蜂)"], advance:["see(看见)","bee(蜜蜂)","tree(树)"], elite:["see(看见)","bee(蜜蜂)","tree(树)","three(三)"] } },
+      {sym:"/ɜː/", spirit:"🐲", spiritName:"卷舌小龙崽", art:"art/v3/spirit_er.jpg", mouth:"嘴巴微张、舌头向后卷，像\"儿\"拉长", trap:"中文没有的音", combo:"ir/er/ur",
+        core:"bird", ipa:["/b/","/ɜː/","/d/"], letter:"ir",
+        words:{ sprout:["bird(鸟)","girl(女孩)"], advance:["bird(鸟)","girl(女孩)","her(她的)"], elite:["bird(鸟)","girl(女孩)","her(她的)","nurse(护士)"] } },
+      {sym:"/ɔː/", spirit:"🐴", spiritName:"圆嘴老马", art:"art/v3/spirit_aw.jpg", mouth:"嘴巴圆圆张开、嘴唇略收，像\"哦\"拉长", trap:"比 /ɒ/ 更长更圆", combo:"or/au/al/aw",
+        core:"four", ipa:["/f/","/ɔː/"], letter:"ou",
+        words:{ sprout:["door(门)","four(四)"], advance:["door(门)","four(四)","ball(球)"], elite:["door(门)","four(四)","ball(球)","short(短)"] } },
+      {sym:"/uː/", spirit:"🦜", spiritName:"圆嘴鹦鹉", art:"art/v3/spirit_oo.jpg", mouth:"嘴唇用力收圆，像\"屋\"拉长", trap:"比 /ʊ/ 更长更紧", combo:"oo/ue/u_e",
+        core:"moon", ipa:["/m/","/uː/","/n/"], letter:"oo",
+        words:{ sprout:["blue(蓝色)","moon(月亮)"], advance:["blue(蓝色)","moon(月亮)","food(食物)"], elite:["blue(蓝色)","moon(月亮)","food(食物)","zoo(动物园)"] } },
+      {sym:"/ɑː/", spirit:"🦁", spiritName:"张嘴大狮", art:"art/v3/spirit_ah.jpg", mouth:"嘴巴张大、舌头放平，像\"啊\"拉长", trap:"比 /ʌ/ 更长更开", combo:"a/ar/au",
+        core:"car", ipa:["/k/","/ɑː/"], letter:"ar",
+        words:{ sprout:["car(汽车)","star(星星)"], advance:["car(汽车)","star(星星)","far(远)"], elite:["car(汽车)","star(星星)","far(远)","arm(手臂)"] } }
+    ]},
+  { key:"diphthong", name:"双元音岛", emoji:"🌈", boss:"🌫️", obs:{e:"🌫️",n:"彩虹迷雾",v:"拨开"}, gd:"彩虹妹妹",
+    sounds:[
+      {sym:"/eɪ/", spirit:"🦋", spiritName:"咧嘴蝴蝶", art:"art/v3/spirit_ei.jpg", mouth:"从 /e/ 滑向 /ɪ/，嘴先咧后收", trap:"听起来像拼音 ei", combo:"a/a_e/ai/ay",
+        core:"cake", ipa:["/k/","/eɪ/","/k/"], letter:"a_e",
+        words:{ sprout:["cake(蛋糕)","rain(雨)"], advance:["cake(蛋糕)","rain(雨)","day(天)"], elite:["cake(蛋糕)","rain(雨)","day(天)","play(玩)"] } },
+      {sym:"/aɪ/", spirit:"🐉", spiritName:"滑翔小龙", art:"art/v3/spirit_ai.jpg", mouth:"从 /a/ 滑向 /ɪ/，嘴由大到小", trap:"听起来像拼音 ai", combo:"i/i_e/y",
+        core:"kite", ipa:["/k/","/aɪ/","/t/"], letter:"i_e",
+        words:{ sprout:["kite(风筝)","five(五)"], advance:["kite(风筝)","five(五)","my(我的)"], elite:["kite(风筝)","five(五)","my(我的)","time(时间)"] } },
+      {sym:"/ɔɪ/", spirit:"🎠", spiritName:"转圈小马", art:"art/v3/spirit_oi.jpg", mouth:"从 /ɔː/ 滑向 /ɪ/", trap:"先圆后扁", combo:"oi/oy",
+        core:"boy", ipa:["/b/","/ɔɪ/"], letter:"oy",
+        words:{ sprout:["boy(男孩)","toy(玩具)"], advance:["boy(男孩)","toy(玩具)","coin(硬币)"], elite:["boy(男孩)","toy(玩具)","coin(硬币)","voice(声音)"] } },
+      {sym:"/əʊ/", spirit:"🦘", spiritName:"收嘴袋鼠", art:"art/v3/spirit_ou.jpg", mouth:"从 /ə/ 滑向 /ʊ/，嘴由松到圆", trap:"听起来像拼音 ou", combo:"o/o_e/oa/ow",
+        core:"go", ipa:["/g/","/əʊ/"], letter:"o",
+        words:{ sprout:["go(去)","no(不)"], advance:["go(去)","no(不)","home(家)"], elite:["go(去)","no(不)","home(家)","snow(雪)"] } },
+      {sym:"/aʊ/", spirit:"🐺", spiritName:"张嘴小狼", art:"art/v3/spirit_au.jpg", mouth:"从 /a/ 滑向 /ʊ/，嘴由大到圆", trap:"先大叫后收嘴", combo:"ou/ow",
+        core:"cow", ipa:["/k/","/aʊ/"], letter:"ow",
+        words:{ sprout:["cow(奶牛)","now(现在)"], advance:["cow(奶牛)","now(现在)","house(房子)"], elite:["cow(奶牛)","now(现在)","house(房子)","mouse(老鼠)"] } },
+      {sym:"/ɪə/", spirit:"🐰", spiritName:"竖耳兔子", art:"art/v3/spirit_ia.jpg", mouth:"从 /ɪ/ 滑向 /ə/，像\"一额\"连读", trap:"常出现在 ear 类词", combo:"ear/eer/ere",
+        core:"ear", ipa:["/ɪə/"], letter:"ear",
+        words:{ sprout:["ear(耳朵)","here(这里)"], advance:["ear(耳朵)","here(这里)","near(附近)"], elite:["ear(耳朵)","here(这里)","near(附近)","deer(鹿)"] } },
+      {sym:"/eə/", spirit:"🐨", spiritName:"滑滑考拉", art:"art/v3/spirit_ea.jpg", mouth:"从 /e/ 滑向 /ə/，嘴先开后收", trap:"常出现在 air 类词", combo:"air/are/ear",
+        core:"air", ipa:["/eə/"], letter:"air",
+        words:{ sprout:["air(空气)","hair(头发)"], advance:["air(空气)","hair(头发)","chair(椅子)"], elite:["air(空气)","hair(头发)","chair(椅子)","bear(熊)"] } },
+      {sym:"/ʊə/", spirit:"🐫", spiritName:"收嘴骆驼", art:"art/v3/spirit_ua.jpg", mouth:"从 /ʊ/ 滑向 /ə/", trap:"较罕见的音", combo:"ure/our",
+        core:"tour", ipa:["/t/","/ʊə/"], letter:"our",
+        words:{ sprout:["tour(旅行)","sure(当然)"], advance:["tour(旅行)","sure(当然)","poor(穷)"], elite:["tour(旅行)","sure(当然)","poor(穷)","cure(治愈)"] } }
+    ]},
+  { key:"plosive", name:"爆破音岛", emoji:"💥", boss:"🪨", obs:{e:"🪨",n:"蹦蹦石块",v:"搬开"}, gd:"磕磕岩像",
+    sounds:[
+      {sym:"/p/", spirit:"🐼", spiritName:"喷气熊猫", art:"art/v3/spirit_p.jpg", mouth:"双唇紧闭后突然放开，喷出一口气", trap:"不送气时像 b", combo:"p",
+        core:"pen", ipa:["/p/","/e/","/n/"], letter:"p",
+        words:{ sprout:["pen(笔)","pig(猪)"], advance:["pen(笔)","pig(猪)","apple(苹果)"], elite:["pen(笔)","pig(猪)","apple(苹果)","cup(杯子)"] } },
+      {sym:"/b/", spirit:"🐻", spiritName:"咚咚棕熊", art:"art/v3/spirit_b.jpg", mouth:"双唇紧闭后突然放开，声带振动", trap:"是 /p/ 的浊音版", combo:"b",
+        core:"bag", ipa:["/b/","/æ/","/g/"], letter:"b",
+        words:{ sprout:["bed(床)","bag(包)"], advance:["bed(床)","bag(包)","book(书)"], elite:["bed(床)","bag(包)","book(书)","ball(球)"] } },
+      {sym:"/t/", spirit:"🐢", spiritName:"舌尖乌龟", art:"art/v3/spirit_t.jpg", mouth:"舌尖顶住上齿龈后弹开", trap:"不要读成拼音 t 太用力", combo:"t/tt",
+        core:"ten", ipa:["/t/","/e/","/n/"], letter:"t",
+        words:{ sprout:["ten(十)","top(顶部)"], advance:["ten(十)","top(顶部)","cat(猫)"], elite:["ten(十)","top(顶部)","cat(猫)","hat(帽子)"] } },
+      {sym:"/d/", spirit:"🐬", spiritName:"舌尖海豚", art:"art/v3/spirit_d.jpg", mouth:"舌尖顶住上齿龈后弹开，声带振动", trap:"是 /t/ 的浊音版", combo:"d/dd",
+        core:"dog", ipa:["/d/","/ɒ/","/g/"], letter:"d",
+        words:{ sprout:["dog(狗)","door(门)"], advance:["dog(狗)","door(门)","bed(床)"], elite:["dog(狗)","door(门)","bed(床)","red(红色)"] } },
+      {sym:"/k/", spirit:"🐱", spiritName:"喉部小猫", art:"art/v3/spirit_k.jpg", mouth:"舌根抬起顶住软腭后放开", trap:"是 c/k/ck 的音", combo:"c/k/ck",
+        core:"cat", ipa:["/k/","/æ/","/t/"], letter:"c",
+        words:{ sprout:["cat(猫)","cup(杯子)"], advance:["cat(猫)","cup(杯子)","book(书)"], elite:["cat(猫)","cup(杯子)","book(书)","key(钥匙)"] } },
+      {sym:"/g/", spirit:"🦍", spiritName:"喉部大猩猩", art:"art/v3/spirit_g.jpg", mouth:"舌根抬起顶住软腭后放开，声带振动", trap:"是 /k/ 的浊音版", combo:"g/gg",
+        core:"go", ipa:["/g/","/əʊ/"], letter:"g",
+        words:{ sprout:["go(去)","dog(狗)"], advance:["go(去)","dog(狗)","bag(包)"], elite:["go(去)","dog(狗)","bag(包)","green(绿色)"] } }
+    ]},
+  { key:"fricative", name:"摩擦音岛", emoji:"🌀", boss:"⏳", obs:{e:"⏳",n:"沙沙沙堆",v:"扫开"}, gd:"沙沙婆婆",
+    sounds:[
+      {sym:"/f/", spirit:"🦊", spiritName:"露齿狐狸", art:"art/v3/spirit_f.jpg", mouth:"上牙轻咬下唇，送气摩擦", trap:"别读成拼音 f 太用力", combo:"f/ff/ph",
+        core:"five", ipa:["/f/","/aɪ/","/v/"], letter:"f",
+        words:{ sprout:["five(五)","fish(鱼)"], advance:["five(五)","fish(鱼)","foot(脚)"], elite:["five(五)","fish(鱼)","foot(脚)","leaf(树叶)"] } },
+      {sym:"/v/", spirit:"🐋", spiritName:"露齿鲸鱼", art:"art/v3/spirit_v.jpg", mouth:"上牙轻咬下唇，声带振动", trap:"是 /f/ 的浊音版", combo:"v/ve",
+        core:"van", ipa:["/v/","/æ/","/n/"], letter:"v",
+        words:{ sprout:["van(货车)","five(五)"], advance:["van(货车)","five(五)","seven(七)"], elite:["van(货车)","five(五)","seven(七)","love(爱)"] } },
+      {sym:"/s/", spirit:"🐍", spiritName:"嘶嘶小蛇", art:"art/v3/spirit_s.jpg", mouth:"舌尖靠近上齿龈，气流从缝中挤出", trap:"别读成拼音 s 太用力", combo:"s/c/ss",
+        core:"sun", ipa:["/s/","/ʌ/","/n/"], letter:"s",
+        words:{ sprout:["six(六)","sun(太阳)"], advance:["six(六)","sun(太阳)","bus(公交车)"], elite:["six(六)","sun(太阳)","bus(公交车)","house(房子)"] } },
+      {sym:"/z/", spirit:"🐝", spiritName:"嗡嗡蜜蜂", art:"art/v3/spirit_z.jpg", mouth:"舌尖靠近上齿龈，声带振动", trap:"是 /s/ 的浊音版", combo:"z/s/zz",
+        core:"zoo", ipa:["/z/","/uː/"], letter:"z",
+        words:{ sprout:["zoo(动物园)","zero(零)"], advance:["zoo(动物园)","zero(零)","nose(鼻子)"], elite:["zoo(动物园)","zero(零)","nose(鼻子)","rose(玫瑰)"] } },
+      {sym:"/ʃ/", spirit:"🌊", spiritName:"嘘嘘海浪", art:"art/v3/spirit_sh.jpg", mouth:"嘴唇前突，像\"嘘\"但更轻", trap:"是 sh 的音", combo:"sh",
+        core:"ship", ipa:["/ʃ/","/ɪ/","/p/"], letter:"sh",
+        words:{ sprout:["ship(船)","fish(鱼)"], advance:["ship(船)","fish(鱼)","shoe(鞋)"], elite:["ship(船)","fish(鱼)","shoe(鞋)","shop(商店)"] } },
+      {sym:"/ʒ/", spirit:"🍮", spiritName:"柔和布丁", art:"art/v3/spirit_zh.jpg", mouth:"嘴唇前突、声带振动，像\"日\"的浊音", trap:"词较少", combo:"s/ge",
+        core:"beige", ipa:["/b/","/eɪ/","/ʒ/"], letter:"ge",
+        words:{ sprout:["television(电视)","usual(通常)"], advance:["television(电视)","usual(通常)","pleasure(乐趣)"], elite:["television(电视)","usual(通常)","pleasure(乐趣)","measure(测量)"] } },
+      {sym:"/θ/", spirit:"🦖", spiritName:"咬舌小恐龙", art:"art/v3/spirit_th.jpg", mouth:"舌尖轻咬两牙之间，送气", trap:"th 的清音，中文没有", combo:"th",
+        core:"three", ipa:["/θ/","/r/","/iː/"], letter:"th",
+        words:{ sprout:["three(三)","thin(瘦)"], advance:["three(三)","thin(瘦)","mouth(嘴)"], elite:["three(三)","thin(瘦)","mouth(嘴)","tooth(牙齿)"] } },
+      {sym:"/ð/", spirit:"🦎", spiritName:"咬舌壁虎", art:"art/v3/spirit_dh.jpg", mouth:"舌尖轻咬两牙之间，声带振动", trap:"th 的浊音", combo:"th",
+        core:"this", ipa:["/ð/","/ɪ/","/s/"], letter:"th",
+        words:{ sprout:["this(这个)","mother(妈妈)"], advance:["this(这个)","mother(妈妈)","father(爸爸)"], elite:["this(这个)","mother(妈妈)","father(爸爸)","the(这个)"] } },
+      {sym:"/h/", spirit:"🐳", spiritName:"哈气小鲸", art:"art/v3/spirit_h.jpg", mouth:"气流轻哈出，像\"喝\"但更轻", trap:"发音要轻、不振动", combo:"h/wh",
+        core:"hat", ipa:["/h/","/æ/","/t/"], letter:"h",
+        words:{ sprout:["hat(帽子)","hot(热)"], advance:["hat(帽子)","hot(热)","home(家)"], elite:["hat(帽子)","hot(热)","home(家)","hand(手)"] } }
+    ]},
+  { key:"nasal", name:"鼻音半岛", emoji:"🎈", boss:"🫧", obs:{e:"🫧",n:"捣蛋泡泡",v:"戳破"}, gd:"嗡嗡蜂后",
+    sounds:[
+      {sym:"/m/", spirit:"🐭", spiritName:"闭嘴小老鼠", art:"art/v3/spirit_m.jpg", mouth:"双唇闭拢、声音从鼻子出来", trap:"像\"嗯\"的闭嘴版", combo:"m/mm",
+        core:"map", ipa:["/m/","/æ/","/p/"], letter:"m",
+        words:{ sprout:["map(地图)","moon(月亮)"], advance:["map(地图)","moon(月亮)","mouse(老鼠)"], elite:["map(地图)","moon(月亮)","mouse(老鼠)","home(家)"] } },
+      {sym:"/n/", spirit:"🐜", spiritName:"开口蚂蚁", art:"art/v3/spirit_n.jpg", mouth:"舌尖抵上齿龈、声音从鼻子出来", trap:"比 /m/ 嘴张开一点", combo:"n/nn/kn",
+        core:"nose", ipa:["/n/","/əʊ/","/z/"], letter:"n",
+        words:{ sprout:["nose(鼻子)","nine(九)"], advance:["nose(鼻子)","nine(九)","sun(太阳)"], elite:["nose(鼻子)","nine(九)","sun(太阳)","hand(手)"] } },
+      {sym:"/ŋ/", spirit:"🐘", spiritName:"长鼻大象", art:"art/v3/spirit_ng.jpg", mouth:"舌根抬起、声音从鼻子出，像\"嗯\"", trap:"是 ng 的音，常在词尾", combo:"ng/n",
+        core:"ring", ipa:["/r/","/ɪ/","/ŋ/"], letter:"ng",
+        words:{ sprout:["sing(唱歌)","ring(戒指)"], advance:["sing(唱歌)","ring(戒指)","long(长)"], elite:["sing(唱歌)","ring(戒指)","long(长)","king(国王)"] } },
+      {sym:"/l/", spirit:"🦩", spiritName:"翘舌火烈鸟", art:"art/v3/spirit_l.jpg", mouth:"舌尖顶住上齿龈，气流从两侧流出", trap:"词尾的 l 也常发", combo:"l/ll",
+        core:"leg", ipa:["/l/","/e/","/g/"], letter:"l",
+        words:{ sprout:["leg(腿)","look(看)"], advance:["leg(腿)","look(看)","ball(球)"], elite:["leg(腿)","look(看)","ball(球)","milk(牛奶)"] } },
+      {sym:"/r/", spirit:"🦔", spiritName:"卷舌刺猬", art:"art/v3/spirit_r.jpg", mouth:"舌头向后卷但不碰牙齿，像\"儿\"", trap:"不是中文 r 的卷舌", combo:"r/rr/wr",
+        core:"red", ipa:["/r/","/e/","/d/"], letter:"r",
+        words:{ sprout:["red(红色)","run(跑)"], advance:["red(红色)","run(跑)","rain(雨)"], elite:["red(红色)","run(跑)","rain(雨)","rice(米饭)"] } },
+      {sym:"/j/", spirit:"🦅", spiritName:"耶耶小鹰", art:"art/v3/spirit_y.jpg", mouth:"像\"耶\"的起音，嘴从扁到开", trap:"是 y 的辅音", combo:"y",
+        core:"yes", ipa:["/j/","/e/","/s/"], letter:"y",
+        words:{ sprout:["yes(是)","you(你)"], advance:["yes(是)","you(你)","yellow(黄色)"], elite:["yes(是)","you(你)","yellow(黄色)","year(年)"] } },
+      {sym:"/w/", spirit:"🐡", spiritName:"圆嘴河豚", art:"art/v3/spirit_w.jpg", mouth:"嘴唇用力收圆、快速放开，像\"哇\"", trap:"是 w 的辅音，嘴要圆", combo:"w/wh",
+        core:"we", ipa:["/w/","/iː/"], letter:"w",
+        words:{ sprout:["we(我们)","win(赢)"], advance:["we(我们)","win(赢)","water(水)"], elite:["we(我们)","win(赢)","water(水)","window(窗户)"] } }
+    ]},
+  { key:"affricate", name:"破擦音岛", emoji:"☄️", boss:"🍿", obs:{e:"🍿",n:"噼啪爆米花",v:"接住"}, gd:"爆花师傅",
+    sounds:[
+      {sym:"/tʃ/", spirit:"🐯", spiritName:"咧嘴小虎", art:"art/v3/spirit_ch.jpg", mouth:"先 /t/ 后 /ʃ/，像\"吃\"但更轻", trap:"是 ch 的音，中文没有完全对应", combo:"ch/tch",
+        core:"chair", ipa:["/tʃ/","/eə/"], letter:"ch",
+        words:{ sprout:["chair(椅子)","chicken(鸡)"], advance:["chair(椅子)","chicken(鸡)","teacher(老师)"], elite:["chair(椅子)","chicken(鸡)","teacher(老师)","picture(图画)"] } },
+      {sym:"/dʒ/", spirit:"🐲", spiritName:"喷火小龙", art:"art/v3/spirit_j.jpg", mouth:"先 /d/ 后 /ʒ/，像\"知\"的浊音", trap:"是 j/g/ge 的音", combo:"j/g/ge/dge",
+        core:"juice", ipa:["/dʒ/","/uː/","/s/"], letter:"j",
+        words:{ sprout:["juice(果汁)","jeep(吉普车)"], advance:["juice(果汁)","jeep(吉普车)","orange(橙子)"], elite:["juice(果汁)","jeep(吉普车)","orange(橙子)","page(页)"] } },
+      {sym:"/tr/", spirit:"🚂", spiritName:"鸣笛火车", art:"art/v3/spirit_tr.jpg", mouth:"先 /t/ 后 /r/，像\"戳\"", trap:"是 tr 的音，先顶舌尖", combo:"tr",
+        core:"tree", ipa:["/tr/","/iː/"], letter:"tr",
+        words:{ sprout:["tree(树)","train(火车)"], advance:["tree(树)","train(火车)","truck(卡车)"], elite:["tree(树)","train(火车)","truck(卡车)","try(尝试)"] } },
+      {sym:"/dr/", spirit:"🦌", spiritName:"得得小鹿", art:"art/v3/spirit_dr.jpg", mouth:"先 /d/ 后 /r/，像\"捉\"", trap:"是 dr 的音，浊音", combo:"dr",
+        core:"drum", ipa:["/dr/","/ʌ/","/m/"], letter:"dr",
+        words:{ sprout:["drum(鼓)","dress(裙子)"], advance:["drum(鼓)","dress(裙子)","driver(司机)"], elite:["drum(鼓)","dress(裙子)","driver(司机)","draw(画)"] } },
+      {sym:"/ts/", spirit:"🐄", spiritName:"次次奶牛", art:"art/v3/spirit_ts.jpg", mouth:"先 /t/ 后 /s/，像\"次\"", trap:"常在复数词尾，如 cats", combo:"ts",
+        core:"cats", ipa:["/k/","/æ/","/ts/"], letter:"ts",
+        words:{ sprout:["cats(猫们)","hats(帽子们)"], advance:["cats(猫们)","hats(帽子们)","kites(风筝们)"], elite:["cats(猫们)","hats(帽子们)","kites(风筝们)","students(学生们)"] } },
+      {sym:"/dz/", spirit:"🐗", spiritName:"子子野猪", art:"art/v3/spirit_dz.jpg", mouth:"先 /d/ 后 /z/，像\"子\"", trap:"是 ts 的浊音，常在复数词尾", combo:"ds",
+        core:"beds", ipa:["/b/","/e/","/dz/"], letter:"ds",
+        words:{ sprout:["beds(床们)","hands(手们)"], advance:["beds(床们)","hands(手们)","friends(朋友们)"], elite:["beds(床们)","hands(手们)","friends(朋友们)","words(词们)"] } }
+    ]}
+];
+
+let ALL_SOUNDS = [];
+ISLANDS.forEach(isl => isl.sounds.forEach(s => { s.islandKey = isl.key; ALL_SOUNDS.push(s); }));
+const TOTAL_SOUNDS = ALL_SOUNDS.length;
+
+/* 最小对立对：易混淆音优先一起考 */
+const PAIRS = {"/æ/":"/e/","/e/":"/æ/","/ɪ/":"/iː/","/iː/":"/ɪ/","/ʊ/":"/uː/","/uː/":"/ʊ/","/ɒ/":"/ɔː/","/ɔː/":"/ɒ/","/ɑː/":"/ʌ/","/ʌ/":"/ɑː/","/eɪ/":"/e/","/aɪ/":"/ɑː/","/əʊ/":"/ɔː/","/aʊ/":"/ɑː/","/s/":"/θ/","/θ/":"/s/","/z/":"/ð/","/ð/":"/z/","/ʃ/":"/tʃ/","/tʃ/":"/ʃ/","/ʒ/":"/ʃ/","/v/":"/f/","/f/":"/v/","/b/":"/p/","/p/":"/b/","/d/":"/t/","/t/":"/d/","/g/":"/k/","/k/":"/g/","/m/":"/n/","/n/":"/m/","/l/":"/r/","/r/":"/l/"};
+
+/* 迁移小试：每个音 2 个新词（不在该音的关卡词表里） */
+const TRANS = {
+  "/æ/":["hand(手)","sad(伤心的)"],"/e/":["egg(鸡蛋)","leg(腿)"],"/ɪ/":["big(大的)","fish(鱼)"],
+  "/ɒ/":["box(盒子)","frog(青蛙)"],"/ʌ/":["run(跑)","fun(有趣的)"],"/ʊ/":["put(放)","wood(木头)"],
+  "/ə/":["sofa(沙发)","panda(熊猫)"],"/iː/":["eat(吃)","sleep(睡觉)"],"/ɜː/":["nurse(护士)","turn(转弯)"],
+  "/ɔː/":["ball(球)","walk(走路)"],"/uː/":["food(食物)","school(学校)"],"/ɑː/":["park(公园)","fast(快的)"],
+  "/eɪ/":["name(名字)","train(火车)"],"/aɪ/":["bike(自行车)","night(夜晚)"],"/ɔɪ/":["coin(硬币)","join(加入)"],
+  "/əʊ/":["boat(小船)","nose(鼻子)"],"/aʊ/":["cloud(云)","down(向下)"],"/ɪə/":["deer(鹿)","near(近的)"],
+  "/eə/":["care(关心)","pear(梨)"],"/ʊə/":["pure(纯净的)","tourist(游客)"],
+  "/p/":["pig(猪)","park(公园)"],"/b/":["big(大的)","bat(球棒)"],"/t/":["two(二)","star(星星)"],
+  "/d/":["bed(床)","bird(鸟)"],"/k/":["cake(蛋糕)","kite(风筝)"],"/g/":["game(游戏)","gift(礼物)"],
+  "/f/":["face(脸)","coffee(咖啡)"],"/v/":["love(爱)","live(住)"],"/s/":["say(说)","dance(跳舞)"],
+  "/z/":["music(音乐)","nose(鼻子)"],"/ʃ/":["wish(愿望)","brush(刷子)"],"/ʒ/":["measure(测量)","vision(视力)"],
+  "/θ/":["bath(洗澡)","teeth(牙齿)"],"/ð/":["weather(天气)","together(一起)"],"/h/":["home(家)","hope(希望)"],
+  "/m/":["home(家)","moon(月亮)"],"/n/":["net(网)","run(跑)"],"/ŋ/":["song(歌)","morning(早上)"],
+  "/l/":["love(爱)","ball(球)"],"/r/":["rain(雨)","write(写)"],"/j/":["yolk(蛋黄)","new(新的)"],
+  "/w/":["wind(风)","swim(游泳)"],"/tʃ/":["cheese(奶酪)","lunch(午餐)"],"/dʒ/":["jump(跳)","gym(体育馆)"],
+  "/tr/":["trip(旅行)","country(国家)"],"/dr/":["dream(梦)","hundred(百)"],"/ts/":["nuts(坚果)","boots(靴子)"],
+  "/dz/":["birds(鸟们)","seeds(种子)"]
+};
+
+const EVO_LEVELS = [{lv:1,name:"宝宝",points:0},{lv:2,name:"进阶",points:10},{lv:3,name:"首领",points:25}];
+function evoOf(points){ const p=Number(points)||0; return p>=25?3:(p>=10?2:1); }
+function evoName(points){ return EVO_LEVELS[evoOf(points)-1].name; }
+
+const state = { star:0, gold:0, cur:0, cleared:[], starsBySym:{}, quizScore:0, diff:"sprout", onboarded:false,
+  streak:0, wrongStreak:0, evo:{}, items:{hint:1, skip:0}, gdStamps:[], skipAhead:0 };
+let levelErrors=0, levelGoldStart=0, levelHp=3, transDone=false;
+
+/* ============ 存档 ============ */
+function save(){
+  try{
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      star:state.star, gold:state.gold, cur:state.cur, cleared:state.cleared,
+      starsBySym:state.starsBySym, diff:state.diff, evo:state.evo,
+      items:state.items, gdStamps:state.gdStamps, skipAhead:state.skipAhead, onboarded:state.onboarded
+    }));
+  }catch(e){}
+}
+function loadSave(){
+  try{
+    const d=JSON.parse(localStorage.getItem(SAVE_KEY));
+    if(d && Array.isArray(d.cleared) && d.cleared.length>0){
+      state.star=d.star||0; state.gold=d.gold||0; state.cur=d.cur||0; state.cleared=d.cleared;
+      state.starsBySym=d.starsBySym||{}; state.diff=d.diff||"sprout"; state.evo=d.evo||{};
+      state.items=Object.assign({hint:0,skip:0}, d.items||{});
+      state.gdStamps=d.gdStamps||[]; state.skipAhead=d.skipAhead||0; state.onboarded=!!d.onboarded;
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+function totalStars(){ return Object.values(state.starsBySym).reduce((a,b)=>a+b,0); }
+
+/* ============ 工具 ============ */
+const $ = id => document.getElementById(id);
+function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); $(id).classList.add("active"); window.scrollTo(0,0); }
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2200); }
+function starLine(){ state.star=totalStars(); $("starCount").textContent=state.star; }
+function goldLine(){ $("goldCount").textContent=state.gold; save(); }
+function diffChip(){ $("diffChip").textContent=DIFF[state.diff].name; $("mapDiff").textContent=DIFF[state.diff].name; }
+function shuf(a){ return a.slice().sort(()=>Math.random()-0.5); }
+function pickFrom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function parseW(str){ const m=str.match(/^(.*)\((.*)\)$/); return m?{word:m[1],meaning:m[2]}:{word:str,meaning:""}; }
+function curSound(){ return ALL_SOUNDS[state.cur]; }
+function curIsland(){ return ISLANDS.find(i=>i.key===curSound().islandKey); }
+
+/* ============ 发音 ============ */
+let speechOK=null, bestVoice=null, speechLocalOK=true, _onlineAu=null;
+function pickVoice(){
+  try{
+    const vs=speechSynthesis.getVoices();
+    if(!vs||!vs.length){ speechLocalOK=false; bestVoice=null; return; }
+    bestVoice =
+      vs.find(v=>/^en[-_]US/i.test(v.lang)&&/(natural|neural|google|aria|jenny|samantha|zira)/i.test(v.name)) ||
+      vs.find(v=>/^en[-_]US/i.test(v.lang)) ||
+      vs.find(v=>/^en[-_]GB/i.test(v.lang)&&/(natural|neural|google)/i.test(v.name)) ||
+      vs.find(v=>/^en/i.test(v.lang)) || null;
+    speechLocalOK = !!bestVoice;
+  }catch(e){ speechLocalOK=false; }
+}
+function initSpeech(){
+  try{
+    if(!('speechSynthesis' in window)){ speechOK=false; speechLocalOK=false; return; }
+    speechSynthesis.getVoices(); pickVoice();
+    if(speechSynthesis.onvoiceschanged!==undefined){ speechSynthesis.onvoiceschanged=()=>{pickVoice();}; }
+    speechOK=true;
+  }catch(e){ speechOK=false; speechLocalOK=false; }
+}
+/* 在线发音兜底：本地 TTS 不可靠时（尤其手机/微信），改用有道词典免费发音接口 */
+function isMobileEnv(){ return /Android|iPhone|iPad|iPod|Mobile|MicroMessenger|WeChat/i.test(navigator.userAgent||""); }
+function playOnline(text, slow){
+  try{
+    let w=String(text||"").trim().toLowerCase();
+    if(!w) return false;
+    if(_onlineAu){ try{_onlineAu.pause();_onlineAu.src="";}catch(e){} _onlineAu=null; }
+    // 音标符号清洗：去掉斜杠/长音记号/重音记号/空格，只留字母；纯音标如 "æ" 有道也能读
+    w=w.replace(/[\/ːˈˌ\s\u02C8\u02CC\u02D0\u0276\u1D39\u0361]/g,"");
+    if(!/^[a-zA-Z]+$/.test(w)) return false;
+    const url='https://dict.youdao.com/dictvoice?audio='+encodeURIComponent(w)+'&type=1';
+    const a=new Audio();
+    a.preload='auto'; a.volume=1; a.src=url;
+    if(slow){ a.playbackRate=0.72; }
+    _onlineAu=a;
+    const p=a.play();
+    if(p && p.catch){ p.catch((err)=>{ try{_onlineAu=null;}catch(e){} toast("发音加载失败，请检查网络后再点一次"); }); }
+    return true;
+  }catch(e){ return false; }
+}
+function speak(text,slow){
+  // 1) 手机/微信环境，或本地无英语语音包：直接走在线发音
+  if(isMobileEnv() || !speechLocalOK || !bestVoice){
+    if(playOnline(text,slow)) return;
   }
+  // 2) 桌面有本地英语语音包：优先本地 TTS
+  if(speechOK && speechLocalOK && bestVoice){
+    try{
+      speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(text);
+      u.lang="en-US"; u.rate=slow?0.55:0.75; u.pitch=1;
+      u.voice=bestVoice;
+      speechSynthesis.speak(u);
+      return;
+    }catch(e){ /* 落到在线兜底 */ }
+  }
+  // 3) 在线兜底
+  playOnline(text,slow);
+}
+function warmSpeech(){
+  initSpeech(); pickVoice();
+  // 解锁移动端 AudioContext（首次用户手势里调用）
+  try{ const c=actx(); if(c && c.state==='suspended'){ c.resume(); } }catch(e){}
 }
 
-// 【核心修复】统一逻辑：本地有英文音色才走TTS，其余全部走在线音频，不再区分音标/单词
-function playAudio(word) {
-  speechSynthesis.cancel();
-  audioPlayer.pause();
-  audioPlayer.currentTime = 0;
+/* ============ 音效 ============ */
+let _actx=null;
+function actx(){ if(!_actx){ try{ _actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ _actx=null; } } return _actx; }
+function tone(freq,dur,type="sine",vol=0.2,delay=0){
+  const c=actx(); if(!c)return;
+  try{
+    const o=c.createOscillator(), g=c.createGain();
+    const t=c.currentTime+delay;
+    o.type=type; o.frequency.value=freq;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(vol,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(c.destination);
+    o.start(t); o.stop(t+dur+0.02);
+  }catch(e){}
+}
+const SFX = {
+  tap(){ tone(660,0.07,"triangle",0.12); },
+  correct(){ tone(523,0.12,"triangle",0.22); tone(659,0.12,"triangle",0.22,0.09); tone(784,0.2,"triangle",0.22,0.18); },
+  wrong(){ tone(300,0.15,"sine",0.15); tone(220,0.22,"sine",0.12,0.1); },
+  defeat(){ tone(523,0.1,"triangle",0.15); tone(659,0.1,"triangle",0.15,0.09); tone(784,0.1,"triangle",0.15,0.18); tone(1046,0.28,"triangle",0.18,0.27); },
+  collect(){ [523,659,784,1046,1318].forEach((f,i)=>tone(f,0.15,"triangle",0.18,i*0.09)); },
+  evolve(){ tone(659,0.15,"sawtooth",0.1); tone(880,0.15,"sawtooth",0.1,0.1); tone(1318,0.3,"sawtooth",0.13,0.2); },
+  hit(){ tone(180,0.1,"triangle",0.15); },
+  star(){ tone(988,0.09,"triangle",0.18); tone(1318,0.16,"triangle",0.18,0.06); }
+};
 
-  // 电脑端、有可用英文音色：优先本地TTS
-  if(speechOK){
-    const utter = new SpeechSynthesisUtterance(word);
-    utter.voice = voiceList[0];
-    utter.rate = 0.85;
-    speechSynthesis.speak(utter);
-    return;
+/* ============ 特效 ============ */
+function fxStar(x,y){ const s=document.createElement("div"); s.className="pop-star"; s.textContent="⭐"; s.style.left=x+"px"; s.style.top=y+"px"; document.body.appendChild(s); setTimeout(()=>s.remove(),850); }
+function fxCoins(x,y,n=1){ for(let i=0;i<n;i++){ const c=document.createElement("div"); c.className="coin-pop"; c.textContent="🪙"; c.style.left=(x+(Math.random()*30-15))+"px"; c.style.top=(y+(Math.random()*10-5))+"px"; document.body.appendChild(c); setTimeout(()=>c.remove(),900); } }
+function fxBounce(el){ if(!el)return; el.classList.remove("correct-bounce"); void el.offsetWidth; el.classList.add("correct-bounce"); }
+function fxShake(el){ if(!el)return; el.classList.remove("wrong-shake"); void el.offsetWidth; el.classList.add("wrong-shake"); }
+function fxDefeat(el){ if(!el)return; el.classList.add("defeat-burst"); }
+function fxGlow(el){ if(!el)return; el.classList.remove("spirit-glow"); void el.offsetWidth; el.classList.add("spirit-glow"); }
+function sfxTap(){ SFX.tap(); }
+function fxAnswer(correct, el, ev){
+  const x=(ev&&ev.clientX)||window.innerWidth/2, y=(ev&&ev.clientY)||window.innerHeight*0.5;
+  if(correct){ SFX.correct(); fxStar(x,y); fxCoins(x,y,2); fxBounce(el); }
+  else{ SFX.wrong(); fxShake(el); }
+}
+function renderHp(el,hp,max,prog){
+  if(!el)return;
+  let html="";
+  for(let i=0;i<max;i++){ html+='<span class="pip '+(prog?'prog':'')+(i<hp?' on':'')+'"></span>'; }
+  el.innerHTML=html;
+}
+function hitObstacle(){
+  levelHp--; SFX.hit();
+  const e=$("obsEmoji"); if(e){ e.classList.remove("hit"); void e.offsetWidth; e.classList.add("hit"); }
+  renderHp($("obsHp"), Math.max(0,levelHp), 3);
+}
+function clearObstacle(){
+  const e=$("synObs");
+  if(e){ e.classList.add("defeated"); fxDefeat(e); SFX.defeat(); }
+  renderHp($("synHp"), 0, 3);
+}
+
+/* ============ 首页 ============ */
+function firstTarget(){
+  for(let i=0;i<ALL_SOUNDS.length;i++){ if(!state.cleared.includes(ALL_SOUNDS[i].sym) && soundUnlocked(i)) return i; }
+  for(let i=0;i<ALL_SOUNDS.length;i++){ if(!state.cleared.includes(ALL_SOUNDS[i].sym)) return i; }
+  return -1;
+}
+function renderHome(){
+  const has=loadSave();
+  $("hCont").style.display = has?"inline":"none";
+  $("hCount").textContent=state.cleared.length;
+  $("hStars").textContent=state.star;
+  $("hGold").textContent=state.gold;
+  $("hBar").style.width=Math.min(100, state.cleared.length/TOTAL_SOUNDS*100)+"%";
+  const t=firstTarget();
+  if(t<0){ $("planTitle").textContent="全部学完啦！🏆"; $("planSub").textContent="去复习打卡保持手感，或重新开始一次冒险"; $("planBtn").textContent="复习打卡 ⚡"; }
+  else{ const s=ALL_SOUNDS[t]; const isl=ISLANDS.find(i=>i.key===s.islandKey);
+    $("planTitle").textContent="学 "+s.sym+" "+s.spiritName+" "+s.spirit;
+    $("planSub").textContent=isl.emoji+" "+isl.name+" · 听辨 → 跟读 → 拼读 三小关";
+    $("planBtn").textContent="开始今天的学习 →"; }
+  const revN=Math.min(5, state.cleared.length);
+  $("revProg").textContent="0/"+revN;
+  diffChip(); starLine(); goldLine(); updateDailyEntry();
+}
+function goToday(){
+  const t=firstTarget();
+  if(t<0){ startReview(); return; }
+  state.cur=t; enterListen();
+}
+
+/* ============ 水平测试（首次启动 · 听音辨词 · 防盲选） ============ */
+let qi=0, qSel=-1, qAnswered=false, qT0=0, selfV=0;
+let qListen={correct:0,wrong:0,guess:0};
+function startQuiz(){ qi=0; qSel=-1; qAnswered=false; selfV=0; qListen={correct:0,wrong:0,guess:0}; renderQuiz(); show("scr-quiz"); }
+function renderQuiz(){
+  const item=QUIZ[qi];
+  $("quizProg").textContent="第 "+(qi+1)+" / "+QUIZ.length+" 题";
+  $("qText").textContent=item.q;
+  $("qFb").textContent="";
+  const box=$("qOpts"); box.innerHTML="";
+  if(item.type==="listen"){
+    const play=document.createElement("div");
+    play.className="q-opt"; play.style.justifyContent="center";
+    play.innerHTML='<div class="q-emoji">🔊</div><div style="font-weight:800;">点击播放（可反复听）</div>';
+    play.onclick=()=>{ speak(item.audio); };
+    box.appendChild(play);
   }
-  // 手机/无英文音色：强制在线音频兜底
-  const audioUrl = TTS_BASE_URL + encodeURIComponent(word);
-  audioPlayer.src = audioUrl;
-  audioPlayer.play().catch(() => {
-    showToast("发音加载失败，请检查网络");
+  item.opts.forEach((o,idx)=>{
+    const d=document.createElement("div");
+    d.className="q-opt"; d.dataset.idx=idx;
+    d.innerHTML='<div class="q-emoji">'+o.emoji+'</div><div>'+o.label+'</div>';
+    d.onclick=()=>{ if(qAnswered)return; qSel=idx; box.querySelectorAll(".q-opt").forEach(x=>x.classList.remove("selected")); d.classList.add("selected"); $("qNext").disabled=false; };
+    box.appendChild(d);
+  });
+  qAnswered=false; qSel=-1;
+  $("qBack").style.display = qi>0?"":"none";
+  $("qNext").textContent = qi<QUIZ.length-1?"下一题 →":"看结果 🎯";
+  $("qNext").disabled=true;
+  if(item.type==="listen"){
+    qT0=Date.now();
+    setTimeout(()=>{ if(qi===QUIZ.indexOf(item)) speak(item.audio); }, 500);
+  }
+}
+function quizNext(){
+  const item=QUIZ[qi];
+  if(qAnswered){ nextQuiz(); return; } // 已出反馈，"下一题"就是前进键
+  if(qSel<0){ toast("先选一个再继续"); return; }
+  if(item.type==="listen"){
+    const dt=Date.now()-qT0;
+    const o=item.opts[qSel];
+    if(dt<1200 && !o.honest){
+      // 点太快 → 判定为盲选，本题不计分，重新来
+      qListen.guess++;
+      $("qFb").textContent="⚡ 选得太快啦，像是在盲选～再听一遍，认真选";
+      speak(item.audio); qT0=Date.now();
+      return;
+    }
+    const isCorr=o.correct===true;
+    if(o.honest){ qListen.wrong++; $("qFb").textContent="没关系，从基础开始也很好 💪"; }
+    else if(isCorr){ qListen.correct++; $("qFb").textContent="✔ 听对了！耳朵很灵"; }
+    else{ qListen.wrong++; $("qFb").textContent="没关系，答案已标绿"; }
+    $("qOpts").querySelectorAll(".q-opt[data-idx]").forEach(x=>{ if(item.opts[+x.dataset.idx].correct) x.classList.add("correct"); });
+    if(!isCorr && !o.honest) $("qOpts").querySelector('.q-opt[data-idx="'+qSel+'"]').classList.add("wrong");
+    qAnswered=true;
+    $("qNext").textContent = qi<QUIZ.length-1?"下一题 →":"看结果 🎯";
+    $("qNext").disabled=false;
+  }else{ selfV=item.opts[qSel].v; nextQuiz(); }
+}
+function quizBack(){ if(qi>0){ qi--; renderQuiz(); } }
+function nextQuiz(){ qi++; if(qi<QUIZ.length){ renderQuiz(); } else showQuizResult(); }
+function showQuizResult(){
+  // 定档规则：听音题是硬指标，自评只做参考；盲选过多的不升档
+  const usable = qListen.correct + qListen.wrong; // 有效听音题数
+  const acc = usable>0 ? qListen.correct/usable : 0;
+  let d;
+  if(usable===0) d = selfV>=2 ? "advance" : "sprout";                       // 全被判盲选 → 保守定档
+  else if(selfV>=3 && qListen.correct===2 && acc===1) d="elite";
+  else if(qListen.correct===2) d="advance";
+  else if(qListen.correct===1 && selfV>=2) d="advance";
+  else d="sprout";
+  state.diff=d; diffChip();
+  state.skipAhead = d==="elite"?12 : d==="advance"?6 : 0;
+  const s=selfV+qListen.correct*3;
+  $("qrScore").textContent=s;
+  $("qrEmoji").textContent = d==="sprout"?"🌱":d==="advance"?"🔥":"👑";
+  $("qrTitle").textContent=DIFF[d].name+"小勇者";
+  $("qrDesc").textContent = d==="sprout"?"从 /æ/ 开始慢慢来":d==="advance"?"耳朵不错，挑战进阶":"两道听音全对，直接上高难度";
+  let note="为你选择了「"+DIFF[d].name+"」难度";
+  if(qListen.guess>0) note+="（有 "+qListen.guess+" 题因点太快未计入）";
+  note+="。这只是初始档：玩几关后系统会根据你的表现自动升降低难度。";
+  $("qrNote").textContent=note;
+  $("qrSkip").textContent = state.skipAhead>0?"🎁 前 "+state.skipAhead+" 个音标已解锁，可自由跳着学":"";
+  state.onboarded=true; save(); show("scr-quizresult");
+}
+
+/* ============ 自适应难度 ============ */
+function noteStreak(correct){
+  if(correct){ state.streak++; state.wrongStreak=0; }
+  else{ state.wrongStreak++; state.streak=0; }
+  if(state.streak>=3 && state.diff==="sprout"){ state.diff="advance"; diffChip(); toast("太棒了！难度升到「进阶」🔥"); state.streak=0; }
+  else if(state.streak>=3 && state.diff==="advance"){ state.diff="elite"; diffChip(); toast("厉害！难度升到「精英」👑"); state.streak=0; }
+  if(state.wrongStreak>=2 && state.diff==="elite"){ state.diff="advance"; diffChip(); toast("别急，降到「进阶」"); state.wrongStreak=0; }
+  else if(state.wrongStreak>=2 && state.diff==="advance"){ state.diff="sprout"; diffChip(); toast("降到「萌芽」，先打好基础 💪"); state.wrongStreak=0; }
+}
+
+/* ============ 成长系统 ============ */
+function getEvo(sym){ return state.evo[sym]||0; }
+function addEvo(sym,pt){ state.evo[sym]=(getEvo(sym)+pt); if(state.evo[sym]>30)state.evo[sym]=30; }
+function spiritImgHTML(s,size){
+  const lv=evoOf(getEvo(s.sym));
+  if(s.art){ return '<img src="'+s.art+'" alt="'+s.spiritName+'" style="width:100%;height:100%;object-fit:cover;">'+(lv>=3?'<span style="position:absolute;top:-6px;left:-4px;font-size:18px;">👑</span>':(lv>=2?'<span style="position:absolute;top:-4px;right:-2px;font-size:13px;">✨</span>':'')); }
+  let inner=s.spirit;
+  if(lv>=3) inner='<span style="position:absolute;top:-6px;left:-4px;font-size:18px;">👑</span>'+s.spirit;
+  else if(lv>=2) inner=s.spirit+'<span style="font-size:13px;">✨</span>';
+  return inner;
+}
+
+/* ============ 地图 ============ */
+function enterMap(){ renderWorldMap(); show("scr-map"); }
+function soundUnlocked(idx){
+  if(idx===0) return true;
+  if(idx<=state.skipAhead) return true;
+  return state.cleared.includes(ALL_SOUNDS[idx-1].sym);
+}
+function renderWorldMap(){
+  const wrap=$("worldMap"); wrap.innerHTML="";
+  ISLANDS.forEach(isl=>{
+    const block=document.createElement("div");
+    block.className="island-block";
+    const clearedCount=isl.sounds.filter(s=>state.cleared.includes(s.sym)).length;
+    const won=state.gdStamps.includes(isl.key);
+    const ready=clearedCount===isl.sounds.length && !won;
+    const firstIdx=ALL_SOUNDS.indexOf(isl.sounds[0]);
+    const locked = clearedCount===0 && !soundUnlocked(firstIdx);
+    const head=document.createElement("div");
+    head.className="ib-head";
+    head.innerHTML='<div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">'+
+      '<span class="ib-emoji">'+isl.emoji+'</span><span class="ib-name">'+isl.name+'</span></div>'+
+      '<span class="gbadge'+(won?' won':ready?' ready':'')+'" '+(ready?'id="gdGo"':'')+'>'+(won?"守护者印章 ✓":ready?"找"+isl.gd+"盖章 👑":"守护者 🔒")+'</span>'+
+      '<span class="ib-count">'+clearedCount+'/'+isl.sounds.length+'</span>';
+    block.appendChild(head);
+    if(ready){ head.querySelector("#gdGo").onclick=()=>{ sfxTap(); startGuardian(isl.key); }; }
+    const row=document.createElement("div"); row.className="ib-sounds";
+    isl.sounds.forEach(s=>{
+      const gIdx=ALL_SOUNDS.indexOf(s);
+      const isCleared=state.cleared.includes(s.sym);
+      const lk=!soundUnlocked(gIdx);
+      const chip=document.createElement("div");
+      chip.className="ib-sound"+(isCleared?" cleared":"")+(lk?" locked":"");
+      chip.textContent=s.sym.replace(/\//g,"");
+      if(isCleared){
+        const tk=document.createElement("span"); tk.className="tick"; tk.textContent="✓"; chip.appendChild(tk);
+        if(state.starsBySym[s.sym]===3){ const st=document.createElement("span"); st.className="st3"; st.textContent="⭐"; chip.appendChild(st); }
+        if(getEvo(s.sym)>0){ const ev=document.createElement("span"); ev.className="evo"; ev.textContent=evoName(getEvo(s.sym)); chip.appendChild(ev); }
+      }
+      if(!lk){ chip.onclick=()=>{ sfxTap(); state.cur=gIdx; enterListen(); }; }
+      row.appendChild(chip);
+    });
+    block.appendChild(row);
+    if(locked) block.classList.add("locked");
+    wrap.appendChild(block);
+  });
+  $("mapCount").textContent=state.cleared.length+"/48";
+  diffChip(); starLine(); goldLine();
+}
+
+/* ============ 试炼 · 听辨 ============ */
+let listenPicked=false, curListen=null;
+function startLevelCommon(){
+  levelErrors=0; levelGoldStart=state.gold; levelHp=3; transDone=false;
+  const isl=curIsland();
+  $("obsEmoji").textContent=isl.obs.e;
+  $("obsName").textContent=isl.obs.n+"出现啦！答对一次"+isl.obs.v+"一团";
+  $("obsEmoji").classList.remove("defeated","hit");
+  $("synObs").textContent=isl.obs.e;
+  $("synObs").classList.remove("defeated","hit");
+  renderHp($("obsHp"),3,3); renderHp($("synHp"),3,3);
+  $("skipBtn").style.display = state.items.skip>0?"":"none";
+}
+function enterListen(){
+  const s=curSound();
+  startLevelCommon();
+  curListen=buildListenOpts(state.diff,s);
+  $("curSymBig").textContent=s.sym;
+  $("listenWord") && ($("listenWord").textContent=curListen.targetWord);
+  const grid=$("optGrid"); grid.innerHTML="";
+  curListen.opts.forEach(o=>{
+    const b=document.createElement("button");
+    b.className="opt"; b.innerHTML=o.sym+'<div class="word">'+o.word+'</div>';
+    b.onclick=(ev)=>{ if(listenPicked)return; listenPicked=true; warmSpeech(); speak(parseW(o.word).word);
+      if(o.sym===curListen.targetSym){
+        b.classList.add("correct");
+        $("listenFb").textContent="✔ "+curIsland().obs.v+"散一团！+2🪙";
+        state.gold+=2; noteStreak(true); fxAnswer(true,b,ev); hitObstacle();
+      }else{
+        b.classList.add("wrong"); levelErrors++;
+        $("listenFb").textContent="再听一次，是 "+curListen.targetSym+"（答错没有金币哦）";
+        noteStreak(false); fxAnswer(false,b,ev);
+        setTimeout(()=>{ b.classList.remove("wrong"); listenPicked=false; }, 800); // 答错可重选
+      }
+      goldLine(); if(o.sym===curListen.targetSym) $("listenNext").style.display=""; };
+    grid.appendChild(b);
+  });
+  $("listenFb").textContent=""; $("listenNext").style.display="none"; listenPicked=false;
+  show("scr-listen");
+  setTimeout(()=>{ warmSpeech(); speak(parseW(curListen.targetWord).word); }, 350);
+}
+function playCurrent(slow){ warmSpeech(); if(curListen) speak(parseW(curListen.targetWord).word,slow); }
+function buildListenOpts(diffKey, target){
+  const n=DIFF[diffKey].listenOpts;
+  const targetWord=pickFrom(target.words[diffKey]);
+  const decoys=[];
+  const pairSym=PAIRS[target.sym];
+  if(pairSym){
+    const ps=ALL_SOUNDS.find(o=>o.sym===pairSym);
+    if(ps){ const pw=pickFrom(ps.words[diffKey]); if(parseW(pw).word!==parseW(targetWord).word) decoys.push({sym:ps.sym,word:pw}); }
+  }
+  const pool=[];
+  ALL_SOUNDS.forEach(o=>{ if(o.sym!==target.sym) o.words[diffKey].forEach(w=>pool.push({sym:o.sym,word:w})); });
+  const seen=new Set(decoys.map(d=>d.word));
+  shuf(pool).forEach(o=>{ if(decoys.length<n-1 && !seen.has(o.word)){ seen.add(o.word); decoys.push(o); } });
+  const opts=[{sym:target.sym,word:targetWord}].concat(decoys).sort(()=>Math.random()-0.5);
+  return { opts, targetSym:target.sym, targetWord };
+}
+
+/* ============ 跳过卡 ============ */
+function useSkip(){
+  if(state.items.skip<=0){ toast("没有跳过卡了，小卖部有售"); return; }
+  const s=curSound();
+  state.items.skip--; levelErrors=2;
+  toast("使用跳过卡，本关直接通过");
+  if(!state.cleared.includes(s.sym)) state.cleared.push(s.sym);
+  state.starsBySym[s.sym]=Math.min(state.starsBySym[s.sym]||3,1);
+  save(); finishLevel();
+}
+
+/* ============ 口型文字高亮 ============ */
+/* 把读法解释里的示范音（引号里的字）和口型关键词放大高亮，让孩子一眼看到重点 */
+function mouthHTML(text){
+  let out = String(text);
+  // 1) 引号内的示范音（"一"、"啊" 等）→ 大号高亮
+  out = out.replace(/[“"]([^”"]{1,4})[”"]/g, '<span class="hl">$1</span>');
+  // 2) 拼音/字母参照（拼音 o、字母组合）→ 高亮
+  out = out.replace(/(拼音\s*[a-zA-Z:ː]+)/g, '<span class="hl">$1</span>');
+  // 3) 音标符号 → 高亮
+  out = out.replace(/(\/[^\/\s]{1,4}\/)/g, '<span class="ipa">$1</span>');
+  // 4) 关键动作词 → 加粗提亮（避开已高亮片段）
+  out = out.replace(/(嘴巴大张|下巴下拉|嘴巴半开|嘴角|嘴唇|舌尖|舌根|声带|送气|气流|拉长|短促|用力|振动)/g, '<b>$1</b>');
+  return out;
+}
+
+/* ============ 跟读 ============ */
+let rec=null, recListening=false, manualMode=false, readTarget="";
+function goRead(){
+  const s=curSound();
+  const w=parseW(pickFrom(s.words[state.diff]));
+  readTarget=w.word;
+  $("readTitle").textContent="照口型读：/"+s.sym.replace(/\//g,"")+"/";
+  $("readWord").textContent=w.word;
+  $("readMeaning").textContent="("+w.meaning+")";
+  $("mouthTip").innerHTML = mouthHTML(s.mouth);
+  $("trapTip").textContent = s.trap ? "⚠️ "+s.trap : "";
+  $("trapTip").style.display = s.trap ? "" : "none";
+  $("comboShow").textContent=s.combo;
+  $("micStatus").textContent="点 🎤 开始跟读";
+  $("readFb").textContent=""; $("readNext").style.display="none";
+  manualMode=false; $("micBtn").textContent="🎤"; $("micBtn").style.background="";
+  $("micBtn").onclick=startReading;
+  setScore(0,0); show("scr-read");
+  setTimeout(()=>{ warmSpeech(); speak(w.word); },350);
+}
+function playReadWord(slow){ warmSpeech(); speak(readTarget,slow); }
+function setScore(got,max){ $("readScore").textContent=max===0?"—":(got+"/"+max);
+  const bars=$("readScoreBar").children; for(let i=0;i<3;i++) bars[i].classList.toggle("on",got>i); }
+function getRecognition(){ const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR)return null;
+  const r=new SR(); r.lang="en-US"; r.interimResults=false; r.maxAlternatives=3; r.continuous=false; return r; }
+function readPassed(){
+  setScore(3,3);
+  $("micStatus").textContent="很棒！又"+curIsland().obs.v+"散一团！";
+  $("readFb").textContent="跟读达标！+3🪙";
+  state.gold+=3; noteStreak(true); goldLine(); hitObstacle();
+  $("readNext").style.display="";
+}
+function startReading(){
+  if(recListening) return;
+  if(!("webkitSpeechRecognition" in window)&&!("SpeechRecognition" in window)){ switchManual("此浏览器不支持语音识别"); return; }
+  const target=readTarget.toLowerCase();
+  rec=getRecognition(); recListening=true;
+  $("micStatus").textContent="🎧 正在听，请跟着读 "+target+" ...";
+  $("micBtn").style.background="#FFB98A"; $("micBtn").textContent="⋯";
+  rec.onresult=(ev)=>{ const heard=[]; for(let i=0;i<ev.results[0].length;i++)heard.push((ev.results[0][i].transcript||"").trim().toLowerCase());
+    let score=0; if(heard.includes(target))score=3; else if(heard.some(h=>h&&(h.includes(target)||target.includes(h))))score=2; else if(heard.some(h=>h&&h.length>=1))score=1;
+    setScore(score,3);
+    if(score>=2){ $("micStatus").textContent="听到了："+heard[0]+" · 很棒！"; readPassed(); }
+    else{ $("micStatus").textContent="听到了："+(heard[0]||"(没听清)"); $("readFb").textContent="再试一次！标准音是 "+target; noteStreak(false); speak(target); }
+    recListening=false; $("micBtn").style.background=""; $("micBtn").textContent="🎤"; };
+  rec.onerror=(e)=>{ recListening=false;
+    if(e.error==="not-allowed"||e.error==="service-not-allowed"){ switchManual("麦克风未授权"); }
+    else if(e.error==="no-speech"){ $("micBtn").style.background=""; $("micBtn").textContent="🎤"; $("micStatus").textContent="没听到声音，再试一次"; setTimeout(()=>speak(target),300); }
+    else if(e.error==="network"){ switchManual("语音识别不可用"); }
+    else{ $("micBtn").style.background=""; $("micBtn").textContent="🎤"; $("micStatus").textContent="识别出错，再点 🎤 试试"; } };
+  rec.onend=()=>{ recListening=false; if(!manualMode){ $("micBtn").style.background=""; $("micBtn").textContent="🎤"; } };
+  try{ rec.start(); }catch(e){ recListening=false; switchManual("语音识别启动失败"); }
+}
+function switchManual(msg){
+  manualMode=true;
+  $("micStatus").textContent=msg+"，改用点选确认";
+  $("readFb").textContent="自己读一遍 "+readTarget+"，读得像就点 ✓";
+  const btn=$("micBtn"); btn.textContent="✓"; btn.style.background="#7FDCB8"; btn.onclick=manualPass;
+  toast(msg+"，已切换手动确认");
+}
+function manualPass(){ $("micStatus").textContent="好棒！继续加油！"; $("readFb").textContent="进入下一步！"; state.gold+=1; goldLine(); $("readNext").style.display=""; }
+
+/* ============ 拼读 ============ */
+let synState=null;
+function goSynthesize(){
+  const s=curSound();
+  const mode = state.diff==="sprout"?"breakdown" : state.diff==="advance"?"synthesis" : "shape";
+  synState={ mode, sym:s.sym, core:s.core, ipa:s.ipa, letter:s.letter, picked:false };
+  $("synMode").textContent = mode==="breakdown"?"🔍 音素拆解":mode==="synthesis"?"🧩 音标合成":"🔤 音形匹配";
+  $("synFb").textContent=""; $("synNext").style.display="none";
+  $("hintBtn").style.display = state.items.hint>0?"":"none";
+  renderHp($("synHp"), Math.max(0,levelHp), 3);
+  if(mode==="breakdown") renderBreakdown(s);
+  else if(mode==="synthesis") renderSynthesis(s);
+  else renderShape(s);
+  show("scr-syn");
+  setTimeout(()=>{ warmSpeech(); speak(s.core); },350);
+}
+function renderBreakdown(s){
+  const targetIpa=s.sym;
+  $("synWord").textContent=s.core;
+  $("synIpa").textContent="听：这个词里藏着哪个音？";
+  const decoys=shuf(ALL_SOUNDS.filter(o=>o.sym!==s.sym).map(o=>o.sym)).slice(0,3);
+  const pool=shuf([targetIpa].concat(decoys));
+  synState.poolTiles=pool.slice();
+  $("synSlotRow").innerHTML=""; $("synSlotRow").style.display="none";
+  const poolEl=$("synTilePool"); poolEl.innerHTML="";
+  pool.forEach(ipa=>{
+    const b=document.createElement("button");
+    b.className="syn-tile"; b.textContent=ipa;
+    b.onclick=(ev)=>{ if(synState.picked)return;
+      if(ipa===targetIpa){
+        synState.picked=true; b.classList.add("used"); clearObstacle();
+        $("synFb").textContent="✔ "+s.core+" 里有 "+targetIpa+" · +4🪙 +1成长点";
+        state.gold+=4; addEvo(s.sym,1); noteStreak(true); fxAnswer(true,b,ev); goldLine();
+        $("synNext").style.display="";
+      }else{
+        levelErrors++; b.classList.add("eliminated"); SFX.hit();
+        const o=$("synObs"); o.classList.remove("hit"); void o.offsetWidth; o.classList.add("hit");
+        $("synFb").textContent="不对哦，再听一次，词里藏着 "+targetIpa; noteStreak(false); fxAnswer(false,b,ev); speak(s.core);
+        setTimeout(()=>{ b.classList.remove("eliminated"); synState.picked=false; },900);
+      } };
+    poolEl.appendChild(b);
   });
 }
-
-function initRecognition() {
-  if (!('webkitSpeechRecognition' in window)) return false;
-  recognition = new webkitSpeechRecognition();
-  recognition.continuous = false;
-  recognition.interimResults = true;
-  recognition.lang = "en-US";
-
-  recognition.onresult = (e) => {
-    clearTimeout(recogTimer);
-    let transcript = "";
-    for (let i = e.resultIndex; i < e.results.length; i++) {
-      transcript += e.results[i][0].transcript;
-    }
-    isListening = false;
-    recognition.stop();
-    if(typeof handleRecogResult === "function"){
-      handleRecogResult(transcript.trim());
-    }
-  };
-
-  recognition.onerror = (e) => {
-    clearTimeout(recogTimer);
-    isListening = false;
-    recognition.stop();
-    if (e.error === 'network') {
-      showToast("语音识别网络不稳定");
-      showManualConfirmBtn();
-    } else if (e.error === 'no-speech') {
-      showToast("未检测到朗读声音");
-      showManualConfirmBtn();
-    } else if (e.error === 'not-allowed') {
-      showToast("麦克风权限被拒绝，请在浏览器设置开启");
-    }
-  };
-
-  recognition.onend = () => {
-    clearTimeout(recogTimer);
-    isListening = false;
+function renderSynthesis(s){
+  $("synWord").textContent=s.core;
+  $("synIpa").textContent="把单词拆成音标，按顺序拼出来（填错点格子可取回重选）";
+  const correctIpa=s.ipa;
+  const decoys=shuf(ALL_SOUNDS.filter(o=>o.sym!==s.sym && !correctIpa.includes(o.sym)).map(o=>o.sym)).slice(0,2);
+  const tiles=shuf(correctIpa.concat(decoys));
+  synState.correctIpa=correctIpa;
+  synState.slots=correctIpa.map(()=>null);
+  const row=$("synSlotRow"); row.innerHTML=""; row.style.display="flex";
+  synState.slots.forEach((_,i)=>{
+    const d=document.createElement("div"); d.className="syn-slot"; d.id="synSlot"+i;
+    d.onclick=()=>takeBackSlot(i); // 点已填的格子取回音标
+    row.appendChild(d);
+  });
+  const poolEl=$("synTilePool"); poolEl.innerHTML="";
+  tiles.forEach(t=>{
+    const b=document.createElement("button"); b.className="syn-tile"; b.textContent=t;
+    b.onclick=()=>{ if(synState.picked)return;
+      const slot=synState.slots.indexOf(null); if(slot<0){ toast("位置已满，点上面的格子取回一个"); return; }
+      synState.slots[slot]=t; b.classList.add("used");
+      const sl=$("synSlot"+slot); sl.textContent=t; sl.classList.add("filled"); sl.dataset.tile=t; fxBounce(sl); SFX.tap();
+      if(!synState.slots.includes(null)) checkSynthesis(s); };
+    poolEl.appendChild(b);
+  });
+}
+/* 点已填的格子 → 音标回弹到下面的选择区，可重选 */
+function takeBackSlot(i){
+  if(!synState || synState.picked || synState.mode!=="synthesis") return;
+  const sl=$("synSlot"+i); if(!sl || !sl.classList.contains("filled")) return;
+  const t=synState.slots[i];
+  synState.slots[i]=null; sl.textContent=""; sl.classList.remove("filled"); delete sl.dataset.tile;
+  sl.classList.remove("bounce-back"); void sl.offsetWidth; sl.classList.add("bounce-back");
+  const tile=[...document.querySelectorAll(".syn-tile")].find(x=>x.textContent===t && x.classList.contains("used"));
+  if(tile) tile.classList.remove("used");
+  SFX.tap();
+}
+function checkSynthesis(s){
+  const correct=synState.correctIpa.join("");
+  const got=synState.slots.join("");
+  synState.picked=true;
+  if(got===correct){
+    clearObstacle();
+    $("synFb").textContent="✔ 拼对了！"+s.core+" = "+correct+" · +5🪙 +2成长点";
+    state.gold+=5; addEvo(s.sym,2); noteStreak(true);
+    fxAnswer(true,$("synWord"),{clientX:innerWidth/2,clientY:innerHeight*0.4});
+    $("synNext").style.display="";
+  }else{
+    levelErrors++; SFX.hit();
+    const o=$("synObs"); o.classList.remove("hit"); void o.offsetWidth; o.classList.add("hit");
+    $("synFb").textContent="顺序不对，正确是 "+correct+"（再来一次，不扣金币）";
+    noteStreak(false); fxAnswer(false,$("synSlotRow"),{clientX:innerWidth/2,clientY:innerHeight*0.4}); speak(s.core);
+    synState.slots=synState.correctIpa.map(()=>null);
+    document.querySelectorAll(".syn-slot").forEach(sl=>{ sl.textContent=""; sl.classList.remove("filled"); });
+    document.querySelectorAll(".syn-tile").forEach(t=>{ t.classList.remove("used"); });
+    synState.picked=false;
   }
+  goldLine();
+}
+function renderShape(s){
+  const targetIpa=s.sym;
+  $("synWord").textContent=s.core;
+  $("synIpa").textContent="字母组合「"+s.letter+"」在 "+s.core+" 里发哪个音？";
+  const decoys=shuf(ALL_SOUNDS.filter(o=>o.sym!==s.sym).map(o=>o.sym)).slice(0,3);
+  const pool=shuf([targetIpa].concat(decoys));
+  synState.poolTiles=pool.slice();
+  $("synSlotRow").innerHTML=""; $("synSlotRow").style.display="none";
+  const poolEl=$("synTilePool"); poolEl.innerHTML="";
+  pool.forEach(ipa=>{
+    const b=document.createElement("button");
+    b.className="syn-tile"; b.textContent=ipa;
+    b.onclick=(ev)=>{ if(synState.picked)return;
+      if(ipa===targetIpa){
+        synState.picked=true; b.classList.add("used"); clearObstacle();
+        $("synFb").textContent="✔ "+s.letter+" 发 "+targetIpa+" · +6🪙 +2成长点";
+        state.gold+=6; addEvo(s.sym,2); noteStreak(true); fxAnswer(true,b,ev); goldLine();
+        $("synNext").style.display="";
+      }else{
+        levelErrors++; b.classList.add("eliminated"); SFX.hit();
+        const o=$("synObs"); o.classList.remove("hit"); void o.offsetWidth; o.classList.add("hit");
+        $("synFb").textContent="再想想，「"+s.letter+"」发 "+targetIpa; noteStreak(false); fxAnswer(false,b,ev); speak(s.core);
+        setTimeout(()=>{ b.classList.remove("eliminated"); synState.picked=false; },900);
+      } };
+    poolEl.appendChild(b);
+  });
+}
+function playSyn(slow){ warmSpeech(); speak(curSound().core,slow); }
+
+/* ============ 提示卡 ============ */
+function useHint(){
+  if(state.items.hint<=0){ toast("没有提示卡了，小卖部有售"); return; }
+  if(!synState||synState.picked) return;
+  const s=curSound();
+  if(synState.mode==="synthesis"){
+    const idx=synState.slots.indexOf(null); if(idx<0)return;
+    const t=synState.correctIpa[idx];
+    synState.slots[idx]=t;
+    const sl=$("synSlot"+idx); sl.textContent=t; sl.classList.add("filled","hint");
+    document.querySelectorAll(".syn-tile").forEach(tb=>{ if(tb.textContent===t&&!tb.classList.contains("used")) tb.classList.add("used"); });
+    if(!synState.slots.includes(null)) checkSynthesis(s);
+  }else{
+    const tiles=document.querySelectorAll("#synTilePool .syn-tile");
+    const wrongs=Array.from(tiles).filter(tb=>!tb.classList.contains("used")&&tb.textContent!==s.sym);
+    if(wrongs.length){ wrongs[Math.floor(Math.random()*wrongs.length)].classList.add("eliminated"); }
+  }
+  state.items.hint--; save();
+  $("hintBtn").style.display = state.items.hint>0?"":"none";
+  toast("提示卡已使用，剩 "+state.items.hint+" 张");
+}
+
+/* ============ 闪回复习 ============ */
+function maybeFlashback(){
+  const learned=ALL_SOUNDS.filter(s=>state.cleared.includes(s.sym)&&s.sym!==curSound().sym);
+  if(learned.length===0) return false;
+  if(Math.random()>0.4) return false;
+  const rev=pickFrom(learned);
+  const n=DIFF[state.diff].listenOpts;
+  const targetWord=parseW(pickFrom(rev.words[state.diff]));
+  const pool=[]; ALL_SOUNDS.forEach(o=>{ if(o.sym!==rev.sym) o.words[state.diff].forEach(w=>pool.push({sym:o.sym,word:w})); });
+  const seenSym=new Set(); const decoys=[];
+  shuf(pool).forEach(o=>{ if(!seenSym.has(o.sym)&&decoys.length<n-1){ seenSym.add(o.sym); decoys.push(o); } });
+  curListen={ opts:[{sym:rev.sym,word:targetWord.word+"("+targetWord.meaning+")"}].concat(decoys.map(d=>{const p=parseW(d.word);return{sym:d.sym,word:p.word+"("+p.meaning+")"}; })).sort(()=>Math.random()-0.5), targetSym:rev.sym, targetWord:targetWord.word+"("+targetWord.meaning+")" };
+  startLevelCommon();
+  $("curSymBig").textContent="⚡ "+rev.sym;
+  $("obsName").textContent="闪回小测验 · "+rev.spiritName+"来串门啦";
+  const grid=$("optGrid"); grid.innerHTML="";
+  curListen.opts.forEach(o=>{
+    const b=document.createElement("button");
+    b.className="opt"; b.innerHTML=o.sym+'<div class="word">'+o.word+'</div>';
+    b.onclick=(ev)=>{ if(listenPicked)return; listenPicked=true; warmSpeech(); speak(parseW(o.word).word);
+      if(o.sym===curListen.targetSym){ b.classList.add("correct"); $("listenFb").textContent="没忘掉！"+rev.sym+" +3🪙 +2成长点"; state.gold+=3; addEvo(rev.sym,2); noteStreak(true); fxAnswer(true,b,ev); hitObstacle(); }
+      else{ b.classList.add("wrong"); $("listenFb").textContent="有点忘了，复习一下 "+rev.sym; noteStreak(false); fxAnswer(false,b,ev);
+        setTimeout(()=>{ b.classList.remove("wrong"); listenPicked=false; }, 800); } // 答错可重选
+      goldLine(); if(o.sym===curListen.targetSym) $("listenNext").style.display=""; };
+    grid.appendChild(b);
+  });
+  $("listenFb").textContent=""; $("listenNext").style.display="none"; listenPicked=false;
+  $("skipBtn").style.display="none";
+  show("scr-listen");
+  setTimeout(()=>{ warmSpeech(); speak(parseW(curListen.targetWord).word); },350);
   return true;
 }
 
-function startListen() {
-  if (!recognition) {
-    showManualConfirmBtn();
-    return;
+/* ============ 收服庆祝（真实三星 + 迁移小试） ============ */
+function finishLevel(){
+  const s=curSound();
+  const w=parseW(pickFrom(s.words[state.diff]));
+  const stars=levelErrors===0?3:(levelErrors===1?2:1);
+  const earned=state.gold-levelGoldStart;
+  if(state.starsBySym[s.sym]===undefined||stars>state.starsBySym[s.sym]) state.starsBySym[s.sym]=stars;
+  if(!state.cleared.includes(s.sym)) state.cleared.push(s.sym);
+  save();
+  const rs=$("resultStars"); rs.innerHTML="";
+  for(let i=0;i<3;i++){ const sp=document.createElement("span"); sp.className=i<stars?"on":"off"; sp.textContent="★"; rs.appendChild(sp); }
+  $("starNote").textContent = stars===3?"零失误完美通关！":stars===2?"只失误 1 次，再来冲 3 星！":"已通关，重打一次可以冲 3 星";
+  const p=getEvo(s.sym);
+  const imgEl=$("spiritImg");
+  imgEl.style.position="relative";
+  imgEl.innerHTML=spiritImgHTML(s);
+  $("spiritName").textContent=s.sym+" "+s.spiritName;
+  $("spiritEvo").textContent=evoName(p)+" · 成长 "+p+"/30 · Lv."+evoOf(p);
+  $("spiritTalk").textContent="「"+s.spiritName+"：跟我读！」";
+  $("resultMouth").innerHTML=mouthHTML(s.mouth);
+  $("resultTrap").textContent=s.trap?"⚠️ "+s.trap:"";
+  $("resultTrap").style.display=s.trap?"":"none";
+  $("spiritEvoBar").style.width=Math.min(100,p/30*100)+"%";
+  $("rewardRow").innerHTML='<span class="chip gold">🪙 +'+earned+'</span><span class="chip mint">成长点 +'+(synState&&synState.mode==="synthesis"?2:1)+'</span><span class="chip peach">新朋友 +1</span>';
+  $("coinLine").textContent="本关获得 +"+earned+" 金币";
+  SFX.collect(); fxGlow(imgEl);
+  /* 迁移小试 */
+  const tb=$("transBox");
+  if(TRANS[s.sym] && !transDone){
+    tb.style.display="";
+    transState={ sym:s.sym, word:pickFrom(TRANS[s.sym]), done:false };
+    $("transHint").textContent="听「"+parseW(transState.word).word+"」，它里面有刚学的 "+s.sym+" 吗？";
+    const pairSym=PAIRS[s.sym]||"/ɒ/";
+    const opts=shuf([{sym:s.sym},{sym:pairSym===s.sym?"/ɔː/":pairSym}]);
+    const box=$("transOpts"); box.innerHTML="";
+    opts.forEach(o=>{
+      const b=document.createElement("button"); b.className="opt"; b.textContent=o.sym;
+      b.onclick=(ev)=>{
+        if(transState.done)return;
+        if(o.sym===s.sym){
+          transState.done=true; b.classList.add("correct");
+          state.gold+=5; goldLine();
+          $("transFb").textContent="✔ 太厉害了，新词也会读！+5🪙";
+          fxAnswer(true,b,ev); SFX.collect();
+          setTimeout(()=>{ tb.style.display="none"; },1200);
+        }else{
+          b.classList.add("wrong"); fxAnswer(false,b,ev);
+          $("transFb").textContent="再听一次，是 "+s.sym; speak(parseW(transState.word).word);
+          setTimeout(()=>b.classList.remove("wrong"),700);
+        }
+      };
+      box.appendChild(b);
+    });
+    setTimeout(()=>{ warmSpeech(); speak(parseW(transState.word).word); },600);
+  }else{ tb.style.display="none"; }
+  /* 下一站按钮 */
+  const btn=$("resultBtn");
+  const isl=curIsland();
+  const islAll=isl.sounds.every(x=>state.cleared.includes(x.sym));
+  const gdDone=state.gdStamps.includes(isl.key);
+  if(state.cleared.length>=TOTAL_SOUNDS && state.gdStamps.length<ISLANDS.length){ btn.textContent="去盖最后一个印章 →"; }
+  else if(islAll && !gdDone){ btn.textContent="找"+isl.gd+"盖章 →"; }
+  else{ btn.textContent = state.cur<TOTAL_SOUNDS-1?"继续冒险 →":"回到地图"; }
+  starLine(); goldLine(); show("scr-result");
+}
+let transState=null;
+function playTrans(slow){ if(transState){ warmSpeech(); speak(parseW(transState.word).word,slow); } }
+function nextOrFinish(){
+  const s=curSound();
+  const isl=curIsland();
+  const islAll=isl.sounds.every(x=>state.cleared.includes(x.sym));
+  const gdDone=state.gdStamps.includes(isl.key);
+  if(islAll && !gdDone){ startGuardian(isl.key); return; }
+  if(state.cleared.length>=TOTAL_SOUNDS && state.gdStamps.length>=ISLANDS.length){
+    $("doneStars").textContent=state.star; show("scr-done"); showFollowPrompt(); showDoneCheer(); return;
   }
-  if(isListening) return;
-  isListening = true;
-  recognition.start();
-  recogTimer = setTimeout(() => {
-    isListening = false;
-    recognition.stop();
-    showToast("识别超时，读完后点击确认继续");
-    showManualConfirmBtn();
-  }, MAX_LISTEN_DURATION);
+  if(state.cur<TOTAL_SOUNDS-1){
+    state.cur++; save();
+    if(maybeFlashback()){ }
+    else enterListen();
+  }else{ enterMap(); }
+}
+function resetAll(){
+  try{ localStorage.removeItem(SAVE_KEY); }catch(e){}
+  Object.assign(state,{star:0,gold:0,cur:0,cleared:[],starsBySym:{},quizScore:0,diff:"sprout",streak:0,wrongStreak:0,evo:{},items:{hint:1,skip:0},gdStamps:[],skipAhead:0,mastery:{},dailyDone:""});
+  diffChip(); starLine(); goldLine(); renderHome(); show("scr-home");
 }
 
-function stopListen() {
-  clearTimeout(recogTimer);
-  if (recognition && isListening) {
-    recognition.stop();
+/* ============ 存档备份（导出 / 导入） ============ */
+function showSave(){ renderSave(); show("scr-save"); }
+function renderSave(){ const el=document.getElementById("saveImport"); if(el) el.value=""; }
+function exportSave(){
+  try{
+    const data={ star:state.star, gold:state.gold, cur:state.cur, cleared:state.cleared,
+      starsBySym:state.starsBySym, diff:state.diff, evo:state.evo, items:state.items,
+      gdStamps:state.gdStamps, skipAhead:state.skipAhead, onboarded:state.onboarded,
+      mastery:state.mastery||{}, dailyDone:state.dailyDone||"" };
+    const code="YBZD1|"+btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(code).then(()=>toast("备份码已复制 ✓")).catch(()=>{ toast("请手动复制下方备份码"); copyToTextarea(code); });
+    }else{ toast("请复制下方备份码"); copyToTextarea(code); }
+  }catch(e){ toast("导出失败，请重试"); }
+}
+function copyToTextarea(code){
+  const el=document.getElementById("saveImport"); if(el){ el.value=code; el.select(); }
+}
+function importSave(){
+  try{
+    const el=document.getElementById("saveImport");
+    const code=(el?el.value:"").trim();
+    if(!code){ toast("请先粘贴备份码"); return; }
+    if(!code.startsWith("YBZD1|")){ toast("备份码格式不对，请检查是否完整复制"); return; }
+    const json=decodeURIComponent(escape(atob(code.slice(6))));
+    const d=JSON.parse(json);
+    if(!d || !Array.isArray(d.cleared)){ toast("备份码解析失败"); return; }
+    Object.assign(state,{ star:d.star||0, gold:d.gold||0, cur:d.cur||0, cleared:d.cleared,
+      starsBySym:d.starsBySym||{}, diff:d.diff||"sprout", evo:d.evo||{}, items:Object.assign({hint:0,skip:0},d.items||{}),
+      gdStamps:d.gdStamps||[], skipAhead:d.skipAhead||0, onboarded:!!d.onboarded,
+      mastery:d.mastery||{}, dailyDone:d.dailyDone||"" });
+    save(); diffChip(); starLine(); goldLine(); renderHome(); show("scr-home");
+    toast("进度已恢复 ✓");
+  }catch(e){ toast("导入失败，备份码可能已损坏"); }
+}
+
+/* ============ 每日挑战（通关后巩固，直到完全掌握） ============ */
+function isClearedAll(){ return state.cleared.length>=TOTAL_SOUNDS; }
+function masteryOf(sym){ return (state.mastery&&state.mastery[sym])||0; }
+function allMastered(){ return ALL_SOUNDS.every(s=>masteryOf(s.sym)>=3); }
+function updateDailyEntry(){
+  const el=document.getElementById("dailyEntry");
+  if(!el) return;
+  if(allMastered()){ el.style.display="none"; return; }
+  el.style.display= isClearedAll() ? "block" : "none";
+}
+function startDaily(){
+  if(!isClearedAll()){ toast("先通关全部音标，再开启每日挑战哦"); return; }
+  if(allMastered()){ toast("你已完全掌握全部音标！可以去读绘本啦 🎉"); show("scr-home"); return; }
+  // 优先选掌握度低的音标，保证均衡巩固
+  const low=ALL_SOUNDS.filter(s=>masteryOf(s.sym)<3).sort((a,b)=>masteryOf(a.sym)-masteryOf(b.sym));
+  dailyState={ pool:shuf(low).slice(0,5), i:0, correct:0 };
+  renderDailyQ(); show("scr-daily");
+}
+let dailyState=null;
+function renderDailyQ(){
+  if(!dailyState) return;
+  const q=dailyState.pool[dailyState.i];
+  $("dailyProg").textContent="第 "+(dailyState.i+1)+" / "+dailyState.pool.length+" 题";
+  $("dailyWord").textContent=curSpiritEmoji(q);
+  $("dailyQ").textContent="听发音，选出你听到的音标（点 🔊 播放）";
+  const opts=buildDailyOpts(q);
+  const grid=$("dailyOpts"); grid.innerHTML="";
+  opts.forEach(o=>{
+    const b=document.createElement("button");
+    b.className="btn small"; b.style.cssText="font-size:15px;padding:12px 0;";
+    b.innerHTML="<span style='font-size:18px;'>"+o.sym+"</span><br><span style='font-size:11px;opacity:.8'>"+o.word+"</span>";
+    b.onclick=(ev)=>{ if(dailyState.picked)return; dailyState.picked=true; warmSpeech(); speak(o.word);
+      if(o.sym===q.sym){ b.style.background="var(--mint)"; b.style.boxShadow="0 3px 0 #2FA37C"; $("dailyFb").textContent="✅ 答对！巩固了 "+q.sym; dailyState.correct++; state.mastery[q.sym]=(masteryOf(q.sym)+1); }
+      else{ b.style.background="#f2b8b8"; $("dailyFb").textContent="再听一次，是 "+q.sym; }
+      save(); renderDailyMastery(); $("dailyNext").style.display=""; };
+    grid.appendChild(b);
+  });
+  $("dailyFb").textContent=""; $("dailyNext").style.display="none"; dailyState.picked=false;
+  renderDailyMastery();
+  setTimeout(()=>{ warmSpeech(); speak(parseW(q.words[state.diff]||q.core).word); },400);
+}
+function curSpiritEmoji(s){ return s.spirit||"🔊"; }
+function buildDailyOpts(q){
+  const opts=[{sym:q.sym, word:q.core}];
+  shuf(ALL_SOUNDS.filter(o=>o.sym!==q.sym)).slice(0,3).forEach(o=>opts.push({sym:o.sym, word:o.core}));
+  return shuf(opts);
+}
+function renderDailyMastery(){
+  const el=$("dailyMastery"); if(!el) return;
+  el.innerHTML=ALL_SOUNDS.map(s=>{
+    const n=masteryOf(s.sym);
+    return "<span style='font-size:12px;padding:2px 6px;border-radius:8px;background:"+(n>=3?"#DFF6EC":(n>0?"#FFF3D2":"#F0E4D6"))+";color:"+(n>=3?"#2FA37C":(n>0?"#B07A0A":"#9A8E80"))+";'>"+s.sym+(n>=3?"✓":(n>0?"·"+n:""))+"</span>";
+  }).join(" ");
+}
+function dailyNext(){
+  dailyState.i++;
+  if(dailyState.i>=dailyState.pool.length){ finishDaily(); return; }
+  renderDailyQ();
+}
+function finishDaily(){
+  toast(dailyState.correct===dailyState.pool.length ? "今日挑战全对！太棒了 🎉" : "今日挑战完成！明天再来巩固 💪");
+  if(allMastered()){ toast("🎉 你已完全掌握全部 48 个音标！"); }
+  updateDailyEntry(); renderHome(); show("scr-home");
+}
+
+/* ============ 通关祝贺书签 + 彩带动效 ============ */
+const DONE_CHEER=[
+  "🎖️ 你集齐了 48 只音标精灵，勇气满格！",
+  "🌈 从 /æ/ 到 /dz/，你读懂了整个发音大陆！",
+  "🏅 小小音标勇者，你的冒险刚刚开始！",
+  "📚 现在去翻开英文绘本，你会惊喜地发现自己会读了！",
+  "🌟 48 个音标全部点亮，你就是发音小博士！",
+  "🎓 恭喜毕业！下一个征途是自然拼读的单词大陆！"
+];
+function showDoneCheer(){
+  const el=document.getElementById("doneCheer"); if(!el) return;
+  el.textContent=DONE_CHEER[Math.floor(Math.random()*DONE_CHEER.length)];
+  launchConfetti();
+}
+function launchConfetti(){
+  const colors=["#FFA26B","#5ED0A6","#6FB7F7","#FFD66B","#F9A8C2","#C9B8F5"];
+  const n=window.innerWidth<400?28:42;
+  for(let i=0;i<n;i++){
+    const c=document.createElement("div"); c.className="confetti";
+    const col=colors[Math.floor(Math.random()*colors.length)];
+    c.style.background=col; c.style.left=Math.random()*100+"vw";
+    c.style.animation=`confFall ${2.2+Math.random()*1.8}s linear ${Math.random()*0.8}s forwards`;
+    c.style.transform="rotate("+(Math.random()*360)+"deg)";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),5200);
   }
-  isListening = false;
 }
 
-function showManualConfirmBtn() {
-  if(document.getElementById('recogConfirmBtn')) return;
-  const listenWrap = document.querySelector(".listen-area");
-  if(!listenWrap) return;
-  const btnWrap = document.createElement('div');
-  btnWrap.style.textAlign = "center";
-  btnWrap.style.marginTop = "16px";
-  const confirmBtn = document.createElement('button');
-  confirmBtn.id = 'recogConfirmBtn';
-  confirmBtn.innerText = "✅ 我读完了，继续";
-  confirmBtn.style.padding = "10px 20px";
-  confirmBtn.style.borderRadius = "99px";
-  confirmBtn.style.border = "none";
-  confirmBtn.style.background = "#ffd175";
-  confirmBtn.style.fontSize = "16px";
-  confirmBtn.onclick = () => {
-    removeConfirmBtn();
-    if(typeof nextStep === "function") nextStep();
+/* ============ 守护者考验 ============ */
+/* 鼓励语：答错时给孩子的口语化打气，避免"差一个重开"的挫败感 */
+const GD_CHEER_1 = [
+  "有点难对吧？没关系，再听一次单词，慢慢选 🌱",
+  "差一点点！守护者说：再试一次，你可以的 ✨",
+  "听一听单词中间那个音，再来一次～ 🎧"
+];
+const GD_CHEER_2 = [
+  "已经试了几次啦，说明你在认真听！再来 💪",
+  "守护者偷偷说：答案就藏在刚才的单词里 👀",
+  "别急，慢速听一遍（🐢按钮），然后选 🐢"
+];
+let gdState=null;
+function startGuardian(key){
+  const isl=ISLANDS.find(i=>i.key===key);
+  gdState={ isl, key, poolBase:isl.sounds, pool:shuf(isl.sounds), qs:shuf(isl.sounds).slice(0,5), i:0, stamps:0, picked:false, tries:0,
+            distractBase:isl.sounds };
+  $("gdName").textContent=isl.name+"守护者 · "+isl.gd;
+  $("gdTalk").textContent="「答对我 5 个问题，我就给你盖上"+isl.name+"的印章！」";
+  $("gdFb").textContent="";
+  renderGdQ(); show("scr-guardian");
+  setTimeout(()=>{ warmSpeech(); playGdInner(false); },400);
+}
+function playGdInner(slow){ if(gdState&&gdState.cur) speak(gdState.cur.word,slow); }
+function playGdWord(slow){ warmSpeech(); playGdInner(slow); }
+function renderGdQ(){
+  const b=gdState;
+  if(b.stamps>=5){ gdEnd(); return; }
+  if(!b.pool || b.pool.length===0) b.pool=shuf(b.poolBase); // 题目用完后重新洗牌，保证能凑够印章
+  b.picked=false; b.tries=0;
+  const s=b.pool.shift();
+  const w=parseW(pickFrom(s.words[state.diff]||s.words.advance));
+  b.cur={sym:s.sym, word:w.word};
+  $("gdFb").textContent="";
+  const nb=$("gdNext"); nb.style.display="none"; nb.textContent="下一题 →"; nb.onclick=gdNextQ;
+  $("gdQ").textContent="第 "+(b.i+1)+" 题 · 「"+w.word+"」里的目标音是？";
+  renderHp($("gdStamps"), b.stamps, 5, true);
+  $("gdProg").textContent="印章进度 "+b.stamps+" / 5";
+  /* 选项：岛内音标 + 对立对优先 */
+  const optsSet=[]; 
+  const pairSym=PAIRS[s.sym];
+  const islSyms=shuf(b.distractBase.map(x=>x.sym).filter(x=>x!==s.sym));
+  if(pairSym && b.distractBase.some(x=>x.sym===pairSym)){ optsSet.push(pairSym); }
+  while(optsSet.length<3 && islSyms.length){ const v=islSyms.pop(); if(!optsSet.includes(v)) optsSet.push(v); }
+  if(optsSet.length<3){
+    const others=shuf(ALL_SOUNDS.map(o=>o.sym).filter(x=>x!==s.sym&&!optsSet.includes(x)));
+    while(optsSet.length<3) optsSet.push(others.pop());
   }
-  btnWrap.appendChild(confirmBtn);
-  listenWrap.parentNode.appendChild(btnWrap);
+  const grid=$("gdOpts"); grid.innerHTML="";
+  shuf([s.sym].concat(optsSet)).forEach(sym=>{
+    const btn=document.createElement("button");
+    btn.className="opt"; btn.textContent=sym;
+    btn.onclick=(ev)=>{
+      if(b.picked)return; b.picked=true;
+      if(sym===s.sym){
+        b.stamps++; btn.classList.add("correct"); SFX.collect();
+        fxStar(ev.clientX,ev.clientY);
+        renderHp($("gdStamps"), b.stamps, 5, true);
+        $("gdProg").textContent="印章进度 "+b.stamps+" / 5";
+        $("gdFb").textContent = b.stamps>=5 ? "✔ 集满 5 个印章！" : "✔ 太棒了！还差 "+(5-b.stamps)+" 个印章！";
+        noteStreak(true); fxAnswer(true,btn,ev);
+        if(b.stamps>=5){ setTimeout(gdEnd,900); return; }
+      }else{
+        btn.classList.add("wrong"); noteStreak(false); fxAnswer(false,btn,ev);
+        b.tries=(b.tries||0)+1;
+        const pool=b.tries===1?GD_CHEER_1:GD_CHEER_2;
+        $("gdFb").textContent=pool[(b.tries-1)%pool.length];
+        // 答错不锁死：0.9 秒后解锁重选，答对才拿到印章
+        setTimeout(()=>{ btn.classList.remove("wrong"); b.picked=false; },900);
+        return;
+      }
+      if(b.stamps<5) $("gdNext").style.display="";
+    };
+    grid.appendChild(btn);
+  });
 }
-
-function removeConfirmBtn() {
-  const el = document.getElementById('recogConfirmBtn');
-  if(el) el.remove();
+function gdNextQ(){
+  const b=gdState;
+  b.i++;
+  if(b.stamps>=5){ gdEnd(); return; }
+  renderGdQ();
+  setTimeout(()=>{ warmSpeech(); playGdInner(false); },300);
 }
-
-function resetListenState() {
-  stopListen();
-  removeConfirmBtn();
-}
-
-function handleRecogResult(text){
-  showToast("识别结果："+text);
-  nextStep();
-}
-
-function nextStep(){
-  showToast("进入下一题");
-  resetListenState();
-}
-
-document.addEventListener("DOMContentLoaded",()=>{
-  initSpeech();
-  initRecognition();
-  const playBtn = document.getElementById("audioPlayBtn");
-  if(playBtn){
-    playBtn.onclick = ()=>playAudio(targetWord);
+function gdEnd(){
+  const b=gdState;
+  const nb=$("gdNext"); nb.style.display="";
+  if(b.type==="review"){
+    const got=b.stamps;
+    state.gold+=got*2; goldLine();
+    $("gdTalk").textContent= got>=4 ? "「我听出来了，你一直有在练！👍」" : "「多练几次就更稳了，我等你回来 😊」";
+    $("gdFb").textContent="复习完成：答对 "+got+" 题，+ "+(got*2)+"🪙";
+    $("gdQ").textContent="复习打卡结束！";
+    SFX.collect();
+    nb.textContent="回到小屋 →"; nb.onclick=()=>{ renderHome(); show("scr-home"); };
+    save(); return;
   }
-  // 取消页面加载自动启动收音（iOS限制，自动识别容易失效），保留点击播放
-  setTimeout(()=>startListen(),600);
-})
+  if(b.stamps>=5){
+    if(!state.gdStamps.includes(b.key)) state.gdStamps.push(b.key);
+    b.isl.sounds.forEach(s=>addEvo(s.sym,2));
+    state.gold+=15; goldLine();
+    $("gdTalk").textContent="「太厉害了！"+b.isl.name+"的印章送给你，全岛精灵成长 +2！」";
+    $("gdFb").textContent="🎉 盖章成功！一共用了 "+(b.i+1)+" 题，奖励 15🪙！";
+    $("gdQ").textContent=b.isl.name+"已被你征服！";
+    SFX.defeat();
+    nb.textContent="回到地图 →"; nb.onclick=()=>{
+      if(state.cleared.length>=TOTAL_SOUNDS && state.gdStamps.length>=ISLANDS.length){ $("doneStars").textContent=state.star; show("scr-done"); showFollowPrompt(); showDoneCheer(); }
+      else enterMap();
+    };
+  }else{
+    // 理论上不会再触发（印章没满会继续出题），保留兜底
+    $("gdFb").textContent="这次集到 "+b.stamps+" / 5 个印章，再来一次！";
+    nb.textContent="再试一次 →"; nb.onclick=()=>startGuardian(b.key);
+  }
+  save();
+}
 
-window.addEventListener("beforeunload",resetListenState);
+/* ============ 复习打卡 ============ */
+function startReview(){
+  const learned=ALL_SOUNDS.filter(s=>state.cleared.includes(s.sym));
+  if(learned.length<3){ toast("先收服至少 3 只精灵再来复习！"); return; }
+  gdState={ type:"review", isl:null, poolBase:learned, pool:shuf(learned), distractBase:ALL_SOUNDS,
+            qs:shuf(learned).slice(0,5), i:0, stamps:0, picked:false, tries:0 };
+  $("gdName").textContent="⚡ 复习打卡";
+  $("gdTalk").textContent="「复习已学的音标，答对一题 +2🪙 和成长点！」";
+  $("gdFb").textContent="";
+  renderGdQ(); show("scr-guardian");
+  setTimeout(()=>{ warmSpeech(); playGdInner(false); },400);
+}
+
+/* ============ 图鉴 ============ */
+let dmTarget=null;
+function showDex(){
+  const grid=$("dexGrid"); grid.innerHTML="";
+  let evoCount=0, star3=0;
+  ALL_SOUNDS.forEach(s=>{
+    const p=getEvo(s.sym), lv=evoOf(p);
+    const cleared=state.cleared.includes(s.sym);
+    if(cleared&&lv>=2) evoCount++;
+    if(cleared&&state.starsBySym[s.sym]===3) star3++;
+    const d=document.createElement("div");
+    d.className="dex-cell"+(cleared?"":" locked");
+    let visual;
+    if(cleared){
+      d.className+=" dex-card";
+      d.onclick=()=>openDexCard(s.sym);
+      visual = s.art ? '<img src="'+s.art+'" alt="'+s.spiritName+'">' : '<div class="d-emoji">'+(lv>=3?"👑"+s.spirit:(lv>=2?s.spirit+"✨":s.spirit))+'</div>';
+      visual += '<span class="zoom-hint">👆 放大</span>';
+    }else{
+      visual = '<div class="d-emoji"><span>🎁</span><span style="font-size:10px;color:#C9BDAE;">等待遇见</span></div>';
+    }
+    d.innerHTML=visual+
+      (cleared&&lv>=3?'<span class="lvbadge">👑</span>':(cleared&&lv>=2?'<span class="lvbadge" style="background:linear-gradient(180deg,#FFDf8A,#E8B84B);">✨</span>':''))+
+      '<div class="dn">'+(cleared?('<b>'+s.sym+'</b> '+s.spiritName+(state.starsBySym[s.sym]===3?" ⭐":"")):"???")+'</div>';
+    grid.appendChild(d);
+  });
+  $("dexCount").textContent=state.cleared.length;
+  $("dexEvoCount").textContent=evoCount;
+  $("dexStarCount").textContent=star3;
+  show("scr-dex");
+}
+function openDexCard(sym){
+  const s=ALL_SOUNDS.find(x=>x.sym===sym);
+  if(!s||!state.cleared.includes(sym)) return;
+  dmTarget=s;
+  $("dmImg").src=s.art||"";
+  $("dmImg").alt=s.spiritName;
+  $("dmSym").textContent=s.sym;
+  $("dmName").textContent=s.spiritName+" "+s.spirit;
+  const p=getEvo(s.sym), lv=evoOf(p);
+  const lvName=lv>=3?"👑 完全体":(lv>=2?"✨ 成长体":"🌱 萌新");
+  const lvCls=lv>=3?"tag-evo3":(lv>=2?"tag-evo2":"tag-evo1");
+  const stars=state.starsBySym[s.sym]||0;
+  $("dmTags").innerHTML=
+    '<span class="chip '+lvCls+'">'+lvName+'</span>'+
+    '<span class="chip mint">'+Array(stars).fill("⭐").join("")+'</span>';
+  $("dmMouth").textContent="👄 "+s.mouth;
+  $("dmTrap").textContent=s.trap?("⚠️ "+s.trap):"";
+  $("dmPlay").textContent="🔊 听标准发音 · "+s.core;
+  $("dexModal").classList.remove("hide");
+}
+function closeDexCard(){ $("dexModal").classList.add("hide"); dmTarget=null; }
+function playDmWord(){ if(dmTarget){ warmSpeech(); speak(parseW(pickFrom(dmTarget.words[state.diff])).word); } }
+
+/* ============ 商店 ============ */
+let selectedStoneTarget=null;
+function showShop(){
+  $("shopGold").textContent=state.gold;
+  $("hintOwn").textContent=state.items.hint;
+  $("skipOwn").textContent=state.items.skip;
+  const box=$("stoneTargets"); box.innerHTML="";
+  selectedStoneTarget=null; $("buyStoneBtn").disabled=true;
+  const cand=ALL_SOUNDS.filter(s=>state.cleared.includes(s.sym));
+  if(!cand.length){ box.innerHTML='<span style="font-size:12px;color:var(--sub);">先去收服一只精灵吧！</span>'; }
+  cand.forEach(s=>{
+    const c=document.createElement("span");
+    c.className="s-chip"; c.textContent=s.spirit+" "+s.sym.replace(/\//g,"");
+    c.onclick=()=>{ box.querySelectorAll(".s-chip").forEach(x=>x.classList.remove("sel")); c.classList.add("sel"); selectedStoneTarget=s; $("buyStoneBtn").disabled=false; };
+    box.appendChild(c);
+  });
+  show("scr-shop");
+}
+function buyStone(){
+  if(!selectedStoneTarget){ toast("先选一只精灵"); return; }
+  if(state.gold<20){ toast("金币不够，先去试炼赚金币！"); return; }
+  if(getEvo(selectedStoneTarget.sym)>=30){ toast("这只精灵已满级，换一只吧"); return; }
+  state.gold-=20;
+  const before=evoOf(getEvo(selectedStoneTarget.sym));
+  addEvo(selectedStoneTarget.sym,10);
+  const after=evoOf(getEvo(selectedStoneTarget.sym));
+  goldLine(); $("shopGold").textContent=state.gold;
+  if(after>before){ SFX.evolve(); toast("🎉 "+selectedStoneTarget.spiritName+" 成长为「"+evoName(getEvo(selectedStoneTarget.sym))+"」啦！"); }
+  else{ toast("成长石给了 "+selectedStoneTarget.sym.replace(/\//g,"")+" "+selectedStoneTarget.spiritName+"！+10"); }
+}
+function buyHint(){
+  if(state.gold<15){ toast("金币不够（需要 15）"); return; }
+  state.gold-=15; state.items.hint++; goldLine();
+  $("shopGold").textContent=state.gold; $("hintOwn").textContent=state.items.hint;
+  toast("提示卡 +1，拼读挑战里可用");
+}
+function buySkip(){
+  if(state.gold<30){ toast("金币不够（需要 30）"); return; }
+  state.gold-=30; state.items.skip++; goldLine();
+  $("shopGold").textContent=state.gold; $("skipOwn").textContent=state.items.skip;
+  toast("跳过卡 +1，试炼里可使用");
+}
+
+/* ============ 初始化 ============ */
+initSpeech();
+renderHome();
+if(!state.onboarded) startQuiz(); // 首次启动：先进水平测试
 </script>
 </body>
 </html>
