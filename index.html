@@ -65,10 +65,11 @@ body{background:#f8f5f0;color:#444;padding:16px;padding-bottom:40px}
 <div class="toast" id="toast"></div>
 
 <script>
-let speechOK = true;
+let speechOK = false;
 let voiceList = [];
 const isMobile = /Android|iPhone|iPad|iPod|WeiXin|MicroMessenger/i.test(navigator.userAgent);
-const TTS_BASE_URL = "https://dict.youdao.com/dictvoice?audio=";
+// 美式发音 type=2，英式type=1
+const TTS_BASE_URL = "https://dict.youdao.com/dictvoice?type=2&audio=";
 let audioPlayer = new Audio();
 
 let recognition = null;
@@ -85,38 +86,32 @@ function showToast(msg){
   setTimeout(()=>{t.style.display="none"},2200);
 }
 
-// 修复：getVoices 兼容写法，不直接await
 function initSpeech() {
-  if (!isMobile && 'speechSynthesis' in window) {
+  if ('speechSynthesis' in window) {
     function loadVoices(){
       voiceList = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
       speechOK = voiceList.length > 0;
     }
     loadVoices();
     speechSynthesis.onvoiceschanged = loadVoices;
-  } else {
-    speechOK = false;
   }
 }
 
+// 【核心修复】统一逻辑：本地有英文音色才走TTS，其余全部走在线音频，不再区分音标/单词
 function playAudio(word) {
-  // 停止之前语音，防止叠音
   speechSynthesis.cancel();
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
 
-  if (/[æɑːɪʊɔːəʌ]/.test(word)) {
-    if (speechOK) {
-      const utter = new SpeechSynthesisUtterance(word);
-      if(voiceList[0]) utter.voice = voiceList[0];
-      utter.rate = 0.85;
-      speechSynthesis.speak(utter);
-      return;
-    } else {
-      showToast("暂无法播放该音标音频");
-      return;
-    }
+  // 电脑端、有可用英文音色：优先本地TTS
+  if(speechOK){
+    const utter = new SpeechSynthesisUtterance(word);
+    utter.voice = voiceList[0];
+    utter.rate = 0.85;
+    speechSynthesis.speak(utter);
+    return;
   }
+  // 手机/无英文音色：强制在线音频兜底
   const audioUrl = TTS_BASE_URL + encodeURIComponent(word);
   audioPlayer.src = audioUrl;
   audioPlayer.play().catch(() => {
@@ -240,7 +235,8 @@ document.addEventListener("DOMContentLoaded",()=>{
   if(playBtn){
     playBtn.onclick = ()=>playAudio(targetWord);
   }
-  setTimeout(()=>startListen(),400);
+  // 取消页面加载自动启动收音（iOS限制，自动识别容易失效），保留点击播放
+  setTimeout(()=>startListen(),600);
 })
 
 window.addEventListener("beforeunload",resetListenState);
